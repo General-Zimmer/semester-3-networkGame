@@ -1,4 +1,4 @@
-package spil.yeet;
+package spil.version1.gamefiles;
 
 public class pair {
 	int x;

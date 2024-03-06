@@ -1,4 +1,4 @@
-package spil.yeet;
+package spil.version1.gamefiles;
 
 import java.util.ArrayList;
 import java.util.Iterator;

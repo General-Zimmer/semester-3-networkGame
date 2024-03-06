@@ -1,4 +1,4 @@
-package spil.yeet;
+package spil.version1.gamefiles;
 
 public class Generel {
 	public static  String[] board = {    // 20x20

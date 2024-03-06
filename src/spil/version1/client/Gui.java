@@ -1,4 +1,4 @@
-package spil.yeet;
+package spil.version1.client;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -14,6 +14,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import spil.version1.gamefiles.GameLogic;
+import spil.version1.gamefiles.Generel;
+import spil.version1.gamefiles.Player;
+import spil.version1.gamefiles.pair;
 
 public class Gui extends Application {
 

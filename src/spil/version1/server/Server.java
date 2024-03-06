@@ -1,4 +1,4 @@
-package spil;
+package spil.version1.server;
 import java.net.*;
 public class Server {
 	

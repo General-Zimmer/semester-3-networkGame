@@ -1,6 +1,8 @@
-package spil.yeet;
+package spil.version1.client;
 
 import javafx.application.Application;
+import spil.version1.gamefiles.GameLogic;
+import spil.version1.gamefiles.Player;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

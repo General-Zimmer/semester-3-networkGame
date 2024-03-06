@@ -1,4 +1,4 @@
-package spil;
+package spil.version1.server;
 
 public class common {
 	String tekst;
