@@ -1,19 +1,15 @@
-package spil.yeet;
+package eksempel.spil;
 
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
+import javafx.scene.image.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import javafx.scene.text.*;
 
 public class Gui extends Application {
 
@@ -78,7 +74,7 @@ public class Gui extends Application {
 					case ' ':					
 						fields[i][j] = new Label("", new ImageView(image_floor));
 						break;
-					default: throw new Exception("Illegal field value: "+ Generel.board[j].charAt(i) );
+					default: throw new Exception("Illegal field value: "+Generel.board[j].charAt(i) );
 					}
 					boardGrid.add(fields[i][j], i, j);
 				}
@@ -107,7 +103,7 @@ public class Gui extends Application {
 			});
 			
             // Putting default players on screen
-			for (int i = 0; i< GameLogic.players.size(); i++) {
+			for (int i=0;i<GameLogic.players.size();i++) {
 			  fields[GameLogic.players.get(i).getXpos()][GameLogic.players.get(i).getYpos()].setGraphic(new ImageView(hero_up));
 			}
 			scoreList.setText(getScoreList());
@@ -122,7 +118,7 @@ public class Gui extends Application {
 			});
 	}
 	
-	public static void placePlayerOnScreen(pair newpos, String direction) {
+	public static void placePlayerOnScreen(pair newpos,String direction) {
 		Platform.runLater(() -> {
 			int newx = newpos.getX();
 			int newy = newpos.getY();
@@ -141,7 +137,7 @@ public class Gui extends Application {
 			});
 	}
 	
-	public static void movePlayerOnScreen(pair oldpos, pair newpos, String direction)
+	public static void movePlayerOnScreen(pair oldpos,pair newpos,String direction)
 	{
 		removePlayerOnScreen(oldpos);
 		placePlayerOnScreen(newpos,direction);

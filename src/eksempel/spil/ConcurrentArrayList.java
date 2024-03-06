@@ -1,4 +1,4 @@
-package spil.yeet;
+package eksempel.spil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ConcurrentArrayList implements Iterable<Player>
 {
-	private List<Player> liste = new ArrayList<Player>();
+	private List<Player> liste = new ArrayList<Player>(); 
 	
 	public void add(Player p) {
 		liste.add(p);	

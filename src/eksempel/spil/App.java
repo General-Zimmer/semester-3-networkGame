@@ -1,11 +1,7 @@
-package spil.yeet;
+package eksempel.spil;
 
-import javafx.application.Application;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-;
+import java.io.*;
+import javafx.application.Application;;
 
 public class App {
 	public static Player me;

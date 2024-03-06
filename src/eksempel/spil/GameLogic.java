@@ -1,4 +1,4 @@
-package spil.yeet;
+package eksempel.spil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.Random;
 
 
 public class GameLogic {
-public static List<Player> players = new ArrayList<Player>();
+public static List<Player> players = new ArrayList<Player>();	
 
 	
 	
@@ -72,7 +72,7 @@ public static List<Player> players = new ArrayList<Player>();
 			} else 
 				me.addPoints(1);
 			pair oldpos = me.getLocation();
-			pair newpos = new pair(x+delta_x,y+delta_y);
+			pair newpos = new pair(x+delta_x,y+delta_y); 
 			Gui.movePlayerOnScreen(oldpos,newpos,direction);
 			me.setLocation(newpos);
 		}

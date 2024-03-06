@@ -1,4 +1,4 @@
-package eksempel;
+package eksempel.server;
 
 public class common {
 	String tekst;

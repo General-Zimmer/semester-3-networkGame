@@ -1,6 +1,9 @@
-package eksempel;
-import java.io.*;
-import java.net.*;
+package eksempel.server;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.Socket;
 // Denne er kun medtaget til Test-formål, skal IKKE anvendes.
 public class TCPClient {
 

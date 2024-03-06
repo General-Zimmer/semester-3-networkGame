@@ -1,5 +1,7 @@
-package eksempel;
-import java.net.*;
+package eksempel.server;
+
+import java.net.ServerSocket;
+import java.net.Socket;
 public class Server {
 	
 	/**
