@@ -1,4 +1,4 @@
-package spil.version1.client;
+package spil.version1.gamefiles;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -14,10 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import spil.version1.gamefiles.GameLogic;
-import spil.version1.gamefiles.Generel;
-import spil.version1.gamefiles.Player;
-import spil.version1.gamefiles.pair;
+import spil.version1.client.GuiThread;
 
 public class Gui extends Application {
 
@@ -160,7 +157,7 @@ public class Gui extends Application {
 			});
 	}
 	public void playerMoved(int delta_x, int delta_y, String direction) {
-		GameLogic.updatePlayer(App.me,delta_x,delta_y,direction);
+		GameLogic.updatePlayer(GuiThread.me,delta_x,delta_y,direction);
 		updateScoreTable();
 	}
 	
