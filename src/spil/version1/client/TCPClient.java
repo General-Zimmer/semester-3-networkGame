@@ -1,4 +1,4 @@
-package spil.version1.server;
+package spil.version1.client;
 import java.io.*;
 import java.net.*;
 // Denne er kun medtaget til Test-formål, skal IKKE anvendes.
