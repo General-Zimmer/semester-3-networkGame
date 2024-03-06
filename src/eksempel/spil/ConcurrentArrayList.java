@@ -26,20 +26,20 @@ public class ConcurrentArrayList implements Iterable<Player>
 
 	@Override
 	public Iterator<Player> iterator() {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 		return liste.iterator();
 	}
 	/*public class ConcurrentArrayListIterator<Player> implements Iterator<Player> {
 
 		@Override
 		public boolean hasNext() {
-			// TODO Auto-generated method stub
+			// Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public Player next() {
-			// TODO Auto-generated method stub
+			// Auto-generated method stub
 			return null;
 		}
 	
