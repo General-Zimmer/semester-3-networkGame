@@ -7,7 +7,7 @@ import java.util.Random;
 
 
 public class GameLogic {
-public static List<Player> players = new ArrayList<Player>();
+public static List<Player> players;
 
 	
 	public static Player makePlayer(String name) {

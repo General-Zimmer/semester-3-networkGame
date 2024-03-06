@@ -11,12 +11,39 @@ import java.net.Socket;
 public class Client{
 	public static Player me;
 	public static final GameLogic localLogic = new GameLogic();
-	public static void main(String argv[]) throws Exception{
-		BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-		Socket clientSocket= new Socket("localhost",1337);
-		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-		BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+	private static final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+	private static final Socket clientSocket;
+
+	static {
+		try {
+			clientSocket = new Socket("localhost",1337);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static final DataOutputStream outToServer;
+
+	static {
+		try {
+			outToServer = new DataOutputStream(clientSocket.getOutputStream());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static final BufferedReader inFromServer;
+
+	static {
+		try {
+			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void main(String argv[]) throws Exception{
 		System.out.println("Indtast spillernavn");
 		String navn = null;
 		navn = inFromUser.readLine();
@@ -40,26 +67,42 @@ public class Client{
 
 		ObjectInputStream objectMap = new ObjectInputStream(inputStream);
 
-		ConcurrentArrayList gameState = (ConcurrentArrayList) objectMap.readObject();
+		ConcurrentArrayList playersList = (ConcurrentArrayList) objectMap.readObject();
+
+		GameLogic.players = playersList.asArrayList();
 
 		GuiThread gui = new GuiThread();
 		gui.start();
 
 		me= localLogic.makePlayer(navn);
 
-		System.out.println("test");
+		while(true){
+			readBoardFromServer();
+		}
+	}
 
-//		String sentence;
-//		String modifiedSentence;
-//		BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-//		Socket clientSocket= new Socket("localhost",6789);
-//		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-//		BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//		sentence = inFromUser.readLine();
-//		outToServer.writeBytes(sentence + '\n');
-//		modifiedSentence = inFromServer.readLine();
-//		System.out.println("FROM SERVER: " + modifiedSentence);
-//		clientSocket.close();
+
+	public static void readBoardFromServer() {
+		String stringRead = null;
+		FileInputStream inputStream = null;
+		ObjectInputStream objectMap = null;
+		ConcurrentArrayList playersList = null;
+
+		try {
+			stringRead = inFromServer.readLine();
+			inputStream = new FileInputStream(stringRead);
+			objectMap = new ObjectInputStream(inputStream);
+			playersList = (ConcurrentArrayList) objectMap.readObject();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        GameLogic.players = playersList.asArrayList();
+	}
+
+	public static void sendBoardToServer(){
+		//TODO: send boarded
 	}
 }
 
