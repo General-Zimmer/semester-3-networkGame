@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="8165286d-991e-4c99-a526-891bac55ff75" name="Changes" comment="" />
+    <list default="true" id="8165286d-991e-4c99-a526-891bac55ff75" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/ConcurrentArrayList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/GameLogic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Generel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Gui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/fireDown.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/fireHorizontal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/fireLeft.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/fireRight.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/fireUp.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/fireVertical.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/fireWallEast.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/fireWallNorth.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/fireWallSouth.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/fireWallWest.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/floor1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/heroDown.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/heroLeft.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/heroRight.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/heroUp.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/wall1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/wall2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/wall3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/wall4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Image/wall5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/Player.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/spil/yeet/pair.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,9 +41,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2dIzfLl7Y49yiT4Y4c6ABSjzOaC" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -22,9 +53,33 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/krist/Documents/GitHub/networkGame/src/spil/yeet",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="spil.yeet.App" />
+      <module name="networkGame" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="spil.yeet.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.App" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
