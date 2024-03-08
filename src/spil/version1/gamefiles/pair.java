@@ -1,6 +1,8 @@
 package spil.version1.gamefiles;
 
-public class pair {
+import java.io.Serializable;
+
+public class pair implements Serializable {
 	int x;
 	int y;
 	public pair(int x, int y) {

@@ -1,6 +1,8 @@
 package spil.version1.gamefiles;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
 	String name;
 	pair location;
 	int point;
