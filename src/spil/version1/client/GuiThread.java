@@ -9,10 +9,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-;
+
 
 public class GuiThread extends Thread{
-	public static Player me;
 	public void run(){
 		Application.launch(Gui.class);
 	}

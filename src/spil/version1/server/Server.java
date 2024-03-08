@@ -59,7 +59,7 @@ public class Server {
 				Socket connectionSocket;
 				try {
 					connectionSocket = welcomeSocket.accept();
-					if (connections.length >= 5) {
+					if (sizeOfSockets() >= 5) {
 						connectionSocket.close();
 					} else {
 						int i = sizeOfSockets();
