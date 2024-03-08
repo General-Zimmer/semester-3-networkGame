@@ -64,9 +64,7 @@ public class Client{
 
 		String stringRead = inFromServer.readLine();
 		FileInputStream inputStream = new FileInputStream(stringRead);
-
 		ObjectInputStream objectMap = new ObjectInputStream(inputStream);
-
 		ConcurrentArrayList playersList = (ConcurrentArrayList) objectMap.readObject();
 
 		GameLogic.players = playersList.asArrayList();
@@ -77,7 +75,13 @@ public class Client{
 		me= localLogic.makePlayer(navn);
 
 		while(true){
+			sendBoardToServer();
+
 			readBoardFromServer();
+
+			updateLocalBoard();
+
+			Thread.sleep(16);
 		}
 	}
 
@@ -101,12 +105,21 @@ public class Client{
         GameLogic.players = playersList.asArrayList();
 	}
 
-	public static void sendBoardToServer(){
+	public static void sendBoardToServer() throws IOException {
 		//TODO: send boarded
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+		ObjectOutputStream serializeStream = new ObjectOutputStream(output);
+
+		serializeStream.writeObject(localLogic);
+
+		outToServer.writeBytes(output.toString()+"\n");
 	}
 
 	public static void updateLocalBoard(){
 		//TODO: opdater localGameLogic boarded, med gameLogics's updatePlayer metode...
+
+
 	}
 }
 
