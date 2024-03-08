@@ -11,13 +11,12 @@ import java.net.Socket;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import static eksempel.spil.GameLogic.players;
 
 
 public class Server {
 
 	static Queue<String> actions = new PriorityQueue<>();
-	static IEGameLogic gameLogic = new ServerGameLogic();
+	static ServerGameLogic gameLogic = new ServerGameLogic();
 	static Socket[] connections = new Socket[5];
 	static ObjectOutputStream[]	objectToClient = new ObjectOutputStream[5];
 	/**
@@ -97,7 +96,7 @@ public class Server {
 				}
 				System.out.println("Sending bytes to client");
 
-				outToClient.writeObject(players);
+				outToClient.writeObject(gameLogic.getPlayers());
 				System.out.println("Players object serialized. ");
 			}
 		} catch (IOException ex) {
