@@ -104,6 +104,10 @@ public class Client{
 	public static void sendBoardToServer(){
 		//TODO: send boarded
 	}
+
+	public static void updateLocalBoard(){
+		//TODO: opdater localGameLogic boarded, med gameLogics's updatePlayer metode...
+	}
 }
 
 
