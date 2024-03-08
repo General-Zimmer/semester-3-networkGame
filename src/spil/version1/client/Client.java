@@ -10,6 +10,8 @@ import java.net.Socket;
 // Denne er kun medtaget til Test-formål, skal IKKE anvendes.
 public class Client{
 	public static Player me;
+
+	public static String navnGlobal;
 	public static ConcurrentArrayList serverBoard = null;
 	public static GameLogic localLogic = new GameLogic();
 
@@ -49,6 +51,8 @@ public class Client{
 		System.out.println("Indtast spillernavn");
 		String navn = null;
 		navn = inFromUser.readLine();
+		navnGlobal = navn;
+
 
 		outToServer.writeBytes("arnold tilmed "+ navn+"\n");
 
@@ -77,8 +81,6 @@ public class Client{
 		me= localLogic.makePlayer(navn);
 
 		while(true){
-			sendBoardToServer();
-
 			readBoardFromServer();
 
 			updateLocalBoard();
@@ -107,15 +109,13 @@ public class Client{
         GameLogic.players = playersList.asArrayList();
 	}
 
-	public static void sendBoardToServer() throws IOException {
-		//TODO: send boarded
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-		ObjectOutputStream serializeStream = new ObjectOutputStream(output);
-
-		serializeStream.writeObject(localLogic.players);
-
-		outToServer.writeBytes(output.toString()+"\n");
+	public static void sendMoveToServer(String move) {
+		try {
+			outToServer.writeBytes("arnold " + navnGlobal+ " " + move+ "\n");
+			outToServer.flush();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static void updateLocalBoard(){
