@@ -75,16 +75,13 @@ public class Client{
 
 
 	public static void readBoardFromServer() {
-		String stringRead = null;
-		FileInputStream inputStream = null;
-		ObjectInputStream objectMap = null;
-		ConcurrentArrayList playersList = null;
+		String stringRead;
+		FileInputStream inputStream;
+		ObjectInputStream objectMap;
+		ConcurrentArrayList playersList;
 
 		System.out.println("læsr board nu");
 		try {
-			if (!inFromServer.ready()) {
-				return;
-			}
 			stringRead = inFromServer.readLine();
 			inputStream = new FileInputStream(stringRead);
 			objectMap = new ObjectInputStream(inputStream);

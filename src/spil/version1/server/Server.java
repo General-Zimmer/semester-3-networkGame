@@ -84,16 +84,6 @@ public class Server {
 		}
 	}
 
-	private static int sizeOfSockets() {
-		int size = 0;
-        for (Socket connection : connections) {
-            if (connection != null) {
-                size++;
-            }
-        }
-		return size;
-	}
-
 	private static void sendBytesBack() throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
@@ -114,6 +104,16 @@ public class Server {
 		}
 	}
 
+
+	private static int sizeOfSockets() {
+		int size = 0;
+		for (Socket connection : connections) {
+			if (connection != null) {
+				size++;
+			}
+		}
+		return size;
+	}
 	// hjælpemetode
 	static byte[] serialize(final Object obj) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
