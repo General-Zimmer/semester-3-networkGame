@@ -2,6 +2,7 @@ package spil.version1.server;
 
 import spil.version1.gamefiles.ConcurrentArrayList;
 import spil.version1.gamefiles.GameLogic;
+import spil.version1.gamefiles.Player;
 import spil.version1.interfaces.IEGameLogic;
 
 import java.io.*;
@@ -64,9 +65,12 @@ public class Server {
 						int i = sizeOfSockets();
 						connections[i] = connectionSocket;
 						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+
+						DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 						String message = read.readLine();
 
-						gameLogic.makePlayer(message.split(" ")[2]);
+						Player p = gameLogic.makePlayer(message.split(" ")[2]);
+						outToClient.writeBytes("tilmeldt " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + "\n");
 						new ServerThread(connectionSocket, actions).start();
 					}
 				} catch (IOException e) {
@@ -91,6 +95,7 @@ public class Server {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
 			out.writeObject(players);
+			out.write("n\"".getBytes());
 
 			byte[] bytes = bos.toByteArray();
 			for (Socket s: connections){
@@ -100,7 +105,7 @@ public class Server {
 			}
 		} catch (IOException ex) {
 			System.out.println("Error serializing object");
-			System.out.println(ex);
+			System.out.println(ex.getMessage());
 		}
 	}
 
