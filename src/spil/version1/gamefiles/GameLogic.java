@@ -2,6 +2,7 @@ package spil.version1.gamefiles;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 
 
@@ -79,7 +80,29 @@ public static List<Player> players = new ArrayList<Player>();
 		
 		
 	}
-	
+
+	public static void movePlayers(Queue<String> actions) {
+		for (String action : actions) {
+			String[] hændelse = action.split(" ");
+			Player p = getPlayer(hændelse[1]);
+			switch (hændelse[2].toLowerCase()) {
+			case "up": updatePlayer(p,0,-1,"up"); break;
+			case "down": updatePlayer(p,0,1,"down"); break;
+			case "left": updatePlayer(p,-1,0,"left"); break;
+			case "right": updatePlayer(p,1,0,"right"); break;
+			}
+		}
+	}
+
+	public static Player getPlayer(String name) {
+		for (Player p : players) {
+			if (p.name.equals(name)) {
+				return p;
+			}
+		}
+		return null;
+	}
+
 	public static Player getPlayerAt(int x, int y) {
 		for (Player p : players) {
 			if (p.getXpos()==x && p.getYpos()==y) {

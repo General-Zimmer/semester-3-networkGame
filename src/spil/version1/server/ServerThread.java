@@ -1,28 +1,34 @@
 package spil.version1.server;
 import java.net.*;
 import java.io.*;
+import java.util.Deque;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 public class ServerThread extends Thread{
 	Socket connSocket;
-	common c;
-	
-	public ServerThread(Socket connSocket,common c) {
+
+	Queue<String> actions;
+
+	public ServerThread(Socket connSocket, Queue<String> actions) {
 		this.connSocket = connSocket;
-		this.c=c; // Til Web-server opgaven skal denne ikke anvendes
+		this.actions = actions;
 	}
 	public void run() {
 		try {
 			BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connSocket.getInputStream()));
 			DataOutputStream outToClient = new DataOutputStream(connSocket.getOutputStream());
-			
-			// Do the work and the communication with the client here	
-			// The following two lines are only an example
+
 			
 			String clientSentence = inFromClient.readLine();
-			outToClient.writeBytes("Hej"+ c.getTekst() + '\n' );
-		
+
+			if (clientSentence.startsWith("arnold ")) {
+				actions.add(clientSentence);
+			} else {
+				outToClient.writeBytes("Invalid command\n");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
-		// do the work here
+		}
 	}
 }
