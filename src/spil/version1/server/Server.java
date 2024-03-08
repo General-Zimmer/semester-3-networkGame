@@ -95,7 +95,7 @@ public class Server {
 					continue;
 				}
 				System.out.println("Sending bytes to client");
-				DataOutputStream outToClient = new DataOutputStream(s.getOutputStream());
+				ObjectOutputStream outToClient = new ObjectOutputStream(s.getOutputStream());
 				outToClient.write(bytes);
 				System.out.println("Players object serialized. ");
 			}
