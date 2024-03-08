@@ -14,7 +14,7 @@ import java.util.Random;
 
 
 public class ServerGameLogic implements IEGameLogic {
-    public ConcurrentArrayList players = new ConcurrentArrayList();
+    public List<Player> players = new ArrayList<>();
 
 
 
@@ -115,7 +115,7 @@ public class ServerGameLogic implements IEGameLogic {
         return null;
     }
 
-    public ConcurrentArrayList getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 }

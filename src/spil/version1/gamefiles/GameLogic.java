@@ -10,7 +10,7 @@ import java.util.Random;
 
 
 public class GameLogic implements IEGameLogic {
-public List<Player> players = new ArrayList<>();
+	public List<Player> players= new ArrayList<>();
 
 	
 
