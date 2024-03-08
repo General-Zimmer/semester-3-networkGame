@@ -20,6 +20,9 @@ public class Client{
 	private static  DataOutputStream outToServer;
 	private static BufferedReader inFromServer;
 
+	static ObjectInputStream objectInFromServer;
+	static ObjectOutputStream objectOutToServer;
+
 	public static void main(String argv[]) throws Exception{
 
 		System.out.println("Indtast spillernavn");
@@ -28,6 +31,8 @@ public class Client{
 
 		try {
 			clientSocket = new Socket("10.10.137.219",1337);
+			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
+			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		} catch (IOException e) {
@@ -64,18 +69,19 @@ public class Client{
 
 		System.out.println("ind i uendelig loop");
 		while(true){
-			readBoardFromServer();
+			if (readBoardFromServer()) {
+				updateLocalBoard();
+			}
 
-			updateLocalBoard();
 
 			Thread.sleep(8);
 		}
 	}
 
 
-	public static void readBoardFromServer() throws IOException {
+	public static boolean readBoardFromServer() {
 		ConcurrentArrayList playersList;
-		ObjectInputStream objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
+
 
 		System.out.println("læsr board nu");
 		try {
@@ -88,6 +94,7 @@ public class Client{
 
 		System.out.println("board læst");
         serverBoard = playersList;
+		return true;
 	}
 
 	public static void sendMoveToServer(String move) {

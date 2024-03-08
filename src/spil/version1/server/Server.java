@@ -18,6 +18,7 @@ public class Server {
 	static IEGameLogic gameLogic = new ServerGameLogic();
 	static ConcurrentArrayList players = new ConcurrentArrayList();
 	static Socket[] connections = new Socket[5];
+	static ObjectOutputStream[]	objectToClient = new ObjectOutputStream[5];
 	/**
 	 * @param args
 	 */
@@ -68,6 +69,7 @@ public class Server {
 						int i = sizeOfSockets();
 						connections[i] = connectionSocket;
 						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+						objectToClient[i] = new ObjectOutputStream(connectionSocket.getOutputStream());
 
 						DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 						String message = read.readLine();
@@ -85,18 +87,16 @@ public class Server {
 	}
 
 	private static void sendBytesBack() throws IOException {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
-			out.writeObject(players);
-
-			byte[] bytes = bos.toByteArray();
-			for (Socket s: connections){
+		try {
+			for (int i = 0; i < connections.length; i++) {
+				Socket s = connections[i];
+				ObjectOutputStream outToClient = objectToClient[i];
 				if (s == null) {
 					continue;
 				}
 				System.out.println("Sending bytes to client");
-				ObjectOutputStream outToClient = new ObjectOutputStream(s.getOutputStream());
-				outToClient.write(bytes);
+
+				outToClient.writeObject(players);
 				System.out.println("Players object serialized. ");
 			}
 		} catch (IOException ex) {
