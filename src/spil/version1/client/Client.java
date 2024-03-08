@@ -30,7 +30,7 @@ public class Client{
 		navnGlobal = navn;
 
 		try {
-			clientSocket = new Socket("10.10.137.213",1337);
+			clientSocket = new Socket("10.10.137.219",1337);
 			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
