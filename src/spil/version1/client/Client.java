@@ -3,6 +3,7 @@ package spil.version1.client;
 import spil.version1.gamefiles.ConcurrentArrayList;
 import spil.version1.gamefiles.GameLogic;
 import spil.version1.gamefiles.Player;
+import spil.version1.interfaces.IEGameLogic;
 
 import java.io.*;
 import java.net.Socket;
@@ -16,38 +17,20 @@ public class Client{
 	public static GameLogic localLogic = new GameLogic();
 
 	private static final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-	private static final Socket clientSocket;
+	private static Socket clientSocket;
+	private static  DataOutputStream outToServer;
+	private static BufferedReader inFromServer;
 
-
-	static {
+	public static void main(String argv[]) throws Exception{
 		try {
 			clientSocket = new Socket("localhost",1337);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static final DataOutputStream outToServer;
-
-	static {
-		try {
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static final BufferedReader inFromServer;
-
-	static {
-		try {
 			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
 
-	public static void main(String argv[]) throws Exception{
+
 		System.out.println("Indtast spillernavn");
 		String navn = null;
 		navn = inFromUser.readLine();
@@ -106,7 +89,7 @@ public class Client{
 		} catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        GameLogic.players = playersList.asArrayList();
+        serverBoard = playersList;
 	}
 
 	public static void sendMoveToServer(String move) {
