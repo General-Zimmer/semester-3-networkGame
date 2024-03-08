@@ -97,6 +97,7 @@ public class Client{
 	}
 
 	public static void sendMoveToServer(String move) {
+		System.out.println("sendte et move");
 		try {
 			outToServer.writeBytes("arnold " + navnGlobal+ " " + move+ "\n");
 			outToServer.flush();
