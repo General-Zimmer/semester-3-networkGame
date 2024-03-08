@@ -112,8 +112,8 @@ public class Gui extends Application {
 			});
 			
             // Putting default players on screen
-			for (int i = 0; i< GameLogic.players.size(); i++) {
-			  fields[GameLogic.players.get(i).getXpos()][GameLogic.players.get(i).getYpos()].setGraphic(new ImageView(hero_up));
+			for (int i = 0; i< gameLogic.players.size(); i++) {
+			  fields[gameLogic.players.get(i).getXpos()][GameLogic.players.get(i).getYpos()].setGraphic(new ImageView(hero_up));
 			}
 			scoreList.setText(getScoreList());
 		} catch(Exception e) {
@@ -167,7 +167,7 @@ public class Gui extends Application {
 	
 	public String getScoreList() {
 		StringBuffer b = new StringBuffer(100);
-		for (Player p : GameLogic.players) {
+		for (Player p : gameLogic.players) {
 			b.append(p+"\r\n");
 		}
 		return b.toString();
