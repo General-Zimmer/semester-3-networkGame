@@ -15,6 +15,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import spil.version1.client.GuiThread;
+import spil.version1.client.LocalLogic;
 
 public class Gui extends Application {
 
@@ -108,8 +109,8 @@ public class Gui extends Application {
 			});
 			
             // Putting default players on screen
-			for (int i = 0; i< GameLogic.players.size(); i++) {
-			  fields[GameLogic.players.get(i).getXpos()][GameLogic.players.get(i).getYpos()].setGraphic(new ImageView(hero_up));
+			for (int i = 0; i< LocalLogic.players.size(); i++) {
+			  fields[LocalLogic.players.get(i).getXpos()][LocalLogic.players.get(i).getYpos()].setGraphic(new ImageView(hero_up));
 			}
 			scoreList.setText(getScoreList());
 		} catch(Exception e) {
@@ -157,13 +158,13 @@ public class Gui extends Application {
 			});
 	}
 	public void playerMoved(int delta_x, int delta_y, String direction) {
-		GameLogic.updatePlayer(GuiThread.me,delta_x,delta_y,direction);
+		LocalLogic.updatePlayer(GuiThread.me,delta_x,delta_y,direction);
 		updateScoreTable();
 	}
 	
 	public String getScoreList() {
 		StringBuffer b = new StringBuffer(100);
-		for (Player p : GameLogic.players) {
+		for (Player p : LocalLogic.players) {
 			b.append(p+"\r\n");
 		}
 		return b.toString();
