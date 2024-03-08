@@ -34,6 +34,11 @@ public class Server {
 				long ting = System.nanoTime();
 				gameLogic.movePlayers(actions);
 				try {
+					sendBytesBack();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+				try {
 					Thread.sleep(8-(ting/1_000_000));
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
@@ -82,8 +87,34 @@ public class Server {
 		return size;
 	}
 
-	private static void sendBytesBack(){
+	private static void sendBytesBack() throws IOException {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
+			out.writeObject(players);
 
+			byte[] bytes = bos.toByteArray();
+			for (Socket s: connections){
+				DataOutputStream outToClient = new DataOutputStream(s.getOutputStream());
+				outToClient.write(bytes);
+				System.out.println("Players object serialized. ");
+			}
+		} catch (IOException ex) {
+			System.out.println("Error serializing object");
+			System.out.println(ex);
+		}
+	}
+
+	// hjælpemetode
+	static byte[] serialize(final Object obj) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
+			out.writeObject(obj);
+			out.flush();
+			return bos.toByteArray();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 }
