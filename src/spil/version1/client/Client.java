@@ -27,7 +27,7 @@ public class Client{
 		navnGlobal = navn;
 
 		try {
-			clientSocket = new Socket("localhost",1337);
+			clientSocket = new Socket("10.10.137.219",1337);
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		} catch (IOException e) {
