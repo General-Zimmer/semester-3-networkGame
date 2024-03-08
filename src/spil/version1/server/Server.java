@@ -15,7 +15,7 @@ import java.util.Queue;
 public class Server {
 
 	static Queue<String> actions = new PriorityQueue<>();
-	static IEGameLogic gameLogic = new GameLogic();
+	static IEGameLogic gameLogic = new ServerGameLogic();
 	static ConcurrentArrayList players = new ConcurrentArrayList();
 	static Socket[] connections = new Socket[5];
 	/**
@@ -88,7 +88,6 @@ public class Server {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
 			out.writeObject(players);
-			out.write("\n".getBytes());
 
 			byte[] bytes = bos.toByteArray();
 			for (Socket s: connections){
