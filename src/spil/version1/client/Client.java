@@ -11,6 +11,7 @@ import java.net.Socket;
 public class Client{
 	public static Player me;
 	public static ConcurrentArrayList serverBoard = null;
+	public static GameLogic localLogic = new GameLogic();
 
 	private static final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
 	private static final Socket clientSocket;
@@ -73,7 +74,7 @@ public class Client{
 		GuiThread gui = new GuiThread();
 		gui.start();
 
-		me= LocalLogic.makePlayer(navn);
+		me= localLogic.makePlayer(navn);
 
 		while(true){
 			sendBoardToServer();
@@ -112,7 +113,7 @@ public class Client{
 
 		ObjectOutputStream serializeStream = new ObjectOutputStream(output);
 
-		serializeStream.writeObject(LocalLogic.players);
+		serializeStream.writeObject(localLogic.players);
 
 		outToServer.writeBytes(output.toString()+"\n");
 	}
@@ -120,9 +121,9 @@ public class Client{
 	public static void updateLocalBoard(){
 		//TODO: opdater localGameLogic boarded, med gameLogics's updatePlayer metode...
 		for(int i = 0; i < serverBoard.size(); i++) {
-			int deltaX = LocalLogic.players.get(i).getXpos() - serverBoard.asArrayList().get(i).getXpos();
-			int deltaY = LocalLogic.players.get(i).getYpos() - serverBoard.asArrayList().get(i).getYpos();
-			LocalLogic.updatePlayer(serverBoard.asArrayList().get(i), deltaX, deltaY, serverBoard.asArrayList().get(i).getDirection());
+			int deltaX = localLogic.players.get(i).getXpos() - serverBoard.asArrayList().get(i).getXpos();
+			int deltaY = localLogic.players.get(i).getYpos() - serverBoard.asArrayList().get(i).getYpos();
+			localLogic.updatePlayer(serverBoard.asArrayList().get(i), deltaX, deltaY, serverBoard.asArrayList().get(i).getDirection());
 
 		}
 	}
