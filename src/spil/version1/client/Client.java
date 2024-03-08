@@ -11,7 +11,6 @@ import java.util.List;
 
 // Denne er kun medtaget til Test-formål, skal IKKE anvendes.
 public class Client{
-	public static Player me;
 	public static String navnGlobal;
 	public static List<Player> serverBoard = null;
 	public static GameLogic localLogic = new GameLogic();
@@ -65,8 +64,6 @@ public class Client{
 		GuiThread gui = new GuiThread();
 		gui.start();
 		System.out.println("gui åbenet");
-
-		me= localLogic.makePlayer(navn);
 
 		System.out.println("ind i uendelig loop");
 		while(true){
@@ -131,6 +128,13 @@ public class Client{
 			localLogic.updatePlayer(localLogic.players.get(i), 0, 0, serverBoard.get(i).getDirection());
 			System.out.println("spillr opdateret i gui");
 		}
+	}
+
+	public static Player getME() {
+		for (Player p : serverBoard) {
+			if(p.getName().equals(navnGlobal)) return p;
+		}
+		return null;
 	}
 }
 
