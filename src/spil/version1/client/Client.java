@@ -10,10 +10,11 @@ import java.net.Socket;
 // Denne er kun medtaget til Test-formål, skal IKKE anvendes.
 public class Client{
 	public static Player me;
-	public static final GameLogic localLogic = new GameLogic();
+	public static ConcurrentArrayList serverBoard = null;
 
 	private static final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
 	private static final Socket clientSocket;
+
 
 	static {
 		try {
@@ -67,12 +68,12 @@ public class Client{
 		ObjectInputStream objectMap = new ObjectInputStream(inputStream);
 		ConcurrentArrayList playersList = (ConcurrentArrayList) objectMap.readObject();
 
-		GameLogic.players = playersList.asArrayList();
+		serverBoard = playersList;
 
 		GuiThread gui = new GuiThread();
 		gui.start();
 
-		me= localLogic.makePlayer(navn);
+		me= LocalLogic.makePlayer(navn);
 
 		while(true){
 			sendBoardToServer();
@@ -111,15 +112,19 @@ public class Client{
 
 		ObjectOutputStream serializeStream = new ObjectOutputStream(output);
 
-		serializeStream.writeObject(localLogic);
+		serializeStream.writeObject(LocalLogic.players);
 
 		outToServer.writeBytes(output.toString()+"\n");
 	}
 
 	public static void updateLocalBoard(){
 		//TODO: opdater localGameLogic boarded, med gameLogics's updatePlayer metode...
+		for(int i = 0; i < serverBoard.size(); i++) {
+			int deltaX = LocalLogic.players.get(i).getXpos() - serverBoard.asArrayList().get(i).getXpos();
+			int deltaY = LocalLogic.players.get(i).getYpos() - serverBoard.asArrayList().get(i).getYpos();
+			LocalLogic.updatePlayer(serverBoard.asArrayList().get(i), deltaX, deltaY, serverBoard.asArrayList().get(i).getDirection());
 
-
+		}
 	}
 }
 
