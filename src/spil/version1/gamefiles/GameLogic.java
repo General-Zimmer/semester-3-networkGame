@@ -53,8 +53,7 @@ public List<Player> players = new ArrayList<>();
 		return p;
 	}
 	
-	public void updatePlayer(Player me, int delta_x, int delta_y, String direction)
-	{
+	public void updatePlayer(Player me, int delta_x, int delta_y, String direction) {
 		me.direction = direction;
 		int x = me.getXpos(),y = me.getYpos();
 

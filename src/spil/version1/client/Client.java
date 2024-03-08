@@ -73,18 +73,13 @@ public class Client{
 	}
 
 
-	public static void readBoardFromServer() {
-		String stringRead;
-		FileInputStream inputStream;
-		ObjectInputStream objectMap;
+	public static void readBoardFromServer() throws IOException {
 		ConcurrentArrayList playersList;
+		ObjectInputStream objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 
 		System.out.println("læsr board nu");
 		try {
-			stringRead = inFromServer.readLine();
-			inputStream = new FileInputStream(stringRead);
-			objectMap = new ObjectInputStream(inputStream);
-			playersList = (ConcurrentArrayList) objectMap.readObject();
+			playersList = (ConcurrentArrayList) objectInFromServer.readObject();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} catch (ClassNotFoundException e) {
