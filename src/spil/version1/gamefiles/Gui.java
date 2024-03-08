@@ -19,6 +19,8 @@ import spil.version1.gamefiles.GameLogic;
 import spil.version1.gamefiles.Generel;
 import spil.version1.gamefiles.Player;
 import spil.version1.gamefiles.pair;
+import spil.version1.client.GuiThread;
+import spil.version1.client.LocalLogic;
 
 public class Gui extends Application {
 
@@ -31,7 +33,7 @@ public class Gui extends Application {
 	public static Image hero_right,hero_left,hero_up,hero_down;
 
 	GameLogic gameLogic = (GameLogic) App.gameLogic;
-	
+
 
 	private static Label[][] fields;
 	private TextArea scoreList;
