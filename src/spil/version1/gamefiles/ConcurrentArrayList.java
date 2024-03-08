@@ -24,6 +24,10 @@ public class ConcurrentArrayList implements Iterable<Player>
 		return liste.size();
 	}
 
+	public ArrayList<Player> asArrayList(){
+		return new ArrayList<>(liste);
+	}
+
 	@Override
 	public Iterator<Player> iterator() {
 		// TODO Auto-generated method stub
