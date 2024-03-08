@@ -1,7 +1,5 @@
 package spil.version1.gamefiles;
 
-import spil.version1.client.Gui;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
