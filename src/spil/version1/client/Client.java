@@ -69,7 +69,7 @@ public class Client{
 
 			updateLocalBoard();
 
-			Thread.sleep(16);
+			Thread.sleep(8);
 		}
 	}
 

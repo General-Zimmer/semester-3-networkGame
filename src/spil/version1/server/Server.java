@@ -95,7 +95,7 @@ public class Server {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
 			out.writeObject(players);
-			out.write("n\"".getBytes());
+			out.write("\n".getBytes());
 
 			byte[] bytes = bos.toByteArray();
 			for (Socket s: connections){
