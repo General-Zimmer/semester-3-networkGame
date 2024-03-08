@@ -82,6 +82,9 @@ public class Client{
 
 		System.out.println("læsr board nu");
 		try {
+			if (!inFromServer.ready()) {
+				return;
+			}
 			stringRead = inFromServer.readLine();
 			inputStream = new FileInputStream(stringRead);
 			objectMap = new ObjectInputStream(inputStream);

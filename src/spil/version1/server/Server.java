@@ -40,8 +40,10 @@ public class Server {
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
+				long t = System.nanoTime() - ting;
+				System.out.println(t / 1_000_000 + " ms");
 				try {
-					Thread.sleep(8-(ting/1_000_000));
+					Thread.sleep(500 - t / 1_000_000);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
@@ -100,13 +102,15 @@ public class Server {
 
 			byte[] bytes = bos.toByteArray();
 			for (Socket s: connections){
+				if (s == null) {
+					continue;
+				}
 				DataOutputStream outToClient = new DataOutputStream(s.getOutputStream());
 				outToClient.write(bytes);
 				System.out.println("Players object serialized. ");
 			}
 		} catch (IOException ex) {
-			System.out.println("Error serializing object");
-			System.out.println(ex.getMessage());
+			ex.printStackTrace();
 		}
 	}
 
