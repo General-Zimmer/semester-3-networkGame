@@ -21,19 +21,18 @@ public class Client{
 	private static BufferedReader inFromServer;
 
 	public static void main(String argv[]) throws Exception{
+
+		System.out.println("Indtast spillernavn");
+		String navn = inFromUser.readLine();
+		navnGlobal = navn;
+
 		try {
-			clientSocket = new Socket("localhost",1337);
+			clientSocket = new Socket("10.10.137.219",1337);
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
-
-		System.out.println("Indtast spillernavn");
-		String navn = null;
-		navn = inFromUser.readLine();
-		navnGlobal = navn;
 
 
 		outToServer.writeBytes("arnold tilmed "+ navn+"\n");
@@ -69,16 +68,16 @@ public class Client{
 
 			updateLocalBoard();
 
-			Thread.sleep(16);
+			Thread.sleep(8);
 		}
 	}
 
 
 	public static void readBoardFromServer() {
-		String stringRead = null;
-		FileInputStream inputStream = null;
-		ObjectInputStream objectMap = null;
-		ConcurrentArrayList playersList = null;
+		String stringRead;
+		FileInputStream inputStream;
+		ObjectInputStream objectMap;
+		ConcurrentArrayList playersList;
 
 		System.out.println("læsr board nu");
 		try {

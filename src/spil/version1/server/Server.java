@@ -25,6 +25,7 @@ public class Server {
 
 		new JoinThread().start();
 
+		new gameTickThread().start();
 
 
 	}
@@ -39,8 +40,10 @@ public class Server {
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
+				long t = System.nanoTime() - ting;
+				System.out.println(t / 1_000_000 + " ms");
 				try {
-					Thread.sleep(8-(ting/1_000_000));
+					Thread.sleep(500 - t / 1_000_000);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
@@ -81,34 +84,37 @@ public class Server {
 		}
 	}
 
-	private static int sizeOfSockets() {
-		int size = 0;
-        for (Socket connection : connections) {
-            if (connection != null) {
-                size++;
-            }
-        }
-		return size;
-	}
-
 	private static void sendBytesBack() throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
 			out.writeObject(players);
-			out.write("n\"".getBytes());
+			out.write("\n".getBytes());
 
 			byte[] bytes = bos.toByteArray();
 			for (Socket s: connections){
+				if (s == null) {
+					continue;
+				}
+				System.out.println("Sending bytes to client");
 				DataOutputStream outToClient = new DataOutputStream(s.getOutputStream());
 				outToClient.write(bytes);
 				System.out.println("Players object serialized. ");
 			}
 		} catch (IOException ex) {
-			System.out.println("Error serializing object");
-			System.out.println(ex.getMessage());
+			ex.printStackTrace();
 		}
 	}
 
+
+	private static int sizeOfSockets() {
+		int size = 0;
+		for (Socket connection : connections) {
+			if (connection != null) {
+				size++;
+			}
+		}
+		return size;
+	}
 	// hjælpemetode
 	static byte[] serialize(final Object obj) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
