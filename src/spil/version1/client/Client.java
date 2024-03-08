@@ -24,6 +24,8 @@ public class Client{
 	static ObjectOutputStream objectOutToServer;
 
 	public static void main(String argv[]) throws Exception{
+		GuiThread gui = new GuiThread();
+		gui.start();
 
 		System.out.println("Indtast spillernavn");
 		String navn = inFromUser.readLine();
@@ -61,8 +63,7 @@ public class Client{
 //		ObjectInputStream objectMap = new ObjectInputStream(inputStream);
 //		ConcurrentArrayList playersList = (ConcurrentArrayList) objectMap.readObject();
 
-		GuiThread gui = new GuiThread();
-		gui.start();
+
 		System.out.println("gui åbenet");
 
 		System.out.println("ind i uendelig loop");

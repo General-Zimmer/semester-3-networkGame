@@ -1,9 +1,6 @@
 package spil.version1.server;
 
-import spil.version1.gamefiles.ConcurrentArrayList;
-import spil.version1.gamefiles.GameLogic;
 import spil.version1.gamefiles.Player;
-import spil.version1.interfaces.IEGameLogic;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -94,7 +91,6 @@ public class Server {
 				if (s == null) {
 					continue;
 				}
-				System.out.println("Sending bytes to client");
 
 				outToClient.writeObject(gameLogic.getPlayers());
 				System.out.println("Players object serialized. ");

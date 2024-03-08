@@ -1,6 +1,5 @@
 package spil.version1.server;
 
-import spil.version1.gamefiles.ConcurrentArrayList;
 import spil.version1.gamefiles.Generel;
 import spil.version1.gamefiles.Player;
 import spil.version1.gamefiles.pair;
@@ -14,7 +13,7 @@ import java.util.Random;
 
 
 public class ServerGameLogic implements IEGameLogic {
-    public List<Player> players = new ArrayList<>();
+    public List<Player> players= new ArrayList<>();
 
 
 
@@ -114,6 +113,7 @@ public class ServerGameLogic implements IEGameLogic {
         }
         return null;
     }
+
 
     public List<Player> getPlayers() {
         return players;
