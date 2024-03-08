@@ -109,9 +109,16 @@ public class Client{
 	public static void updateLocalBoard(){
 		//TODO: opdater localGameLogic boarded, med gameLogics's updatePlayer metode...
 		for(int i = 0; i < serverBoard.size(); i++) {
+			if(localLogic.getPlayer(serverBoard.asArrayList().get(i).getName()) == null) {
+				Player playerServer = serverBoard.asArrayList().get(i);
+				Player playerNew = localLogic.makePlayer(serverBoard.asArrayList().get(i).getName());
+				playerNew.setLocation(playerServer.getLocation());
+			}
 			int deltaX = localLogic.players.get(i).getXpos() - serverBoard.asArrayList().get(i).getXpos();
 			int deltaY = localLogic.players.get(i).getYpos() - serverBoard.asArrayList().get(i).getYpos();
 			localLogic.updatePlayer(serverBoard.asArrayList().get(i), deltaX, deltaY, serverBoard.asArrayList().get(i).getDirection());
+
+
 
 		}
 	}
