@@ -10,6 +10,7 @@ import java.net.Socket;
 // Denne er kun medtaget til Test-formål, skal IKKE anvendes.
 public class Client{
 	public static Player me;
+
 	public static String navnGlobal;
 	public static ConcurrentArrayList serverBoard = null;
 	public static GameLogic localLogic = new GameLogic();
@@ -51,6 +52,7 @@ public class Client{
 		String navn = null;
 		navn = inFromUser.readLine();
 		navnGlobal = navn;
+
 
 		outToServer.writeBytes("arnold tilmed "+ navn+"\n");
 
@@ -107,8 +109,13 @@ public class Client{
         GameLogic.players = playersList.asArrayList();
 	}
 
-	public static void sendMoveToServer(String move) throws IOException {
-		outToServer.writeBytes("arnold " + navnGlobal + " " + move);
+	public static void sendMoveToServer(String move) {
+		try {
+			outToServer.writeBytes("arnold " + navnGlobal+ " " + move+ "\n");
+			outToServer.flush();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static void updateLocalBoard(){

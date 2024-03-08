@@ -19,7 +19,7 @@ import spil.version1.client.Client;
 import spil.version1.client.GuiThread;
 
 
-public class Gui extends Application {
+public class Gui extends Application{
 
 	public static final int size = 30; 
 	public static final int scene_height = size * 20 + 50;
@@ -46,7 +46,7 @@ public class Gui extends Application {
 	// -------------------------------------------
 
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage){
 		try {
 			
 			
@@ -102,18 +102,18 @@ public class Gui extends Application {
 
 			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 				switch (event.getCode()) {
-				case UP:    playerMoved(0,-1,"up");    break;
-				case DOWN:  playerMoved(0,+1,"down");  break;
-				case LEFT:  playerMoved(-1,0,"left");  break;
-				case RIGHT: playerMoved(+1,0,"right"); break;
+				case UP:    playerMoved(0,-1,"up"); Client.sendMoveToServer("up"); break;
+				case DOWN:  playerMoved(0,+1,"down"); Client.sendMoveToServer("down"); break;
+				case LEFT:  playerMoved(-1,0,"left"); Client.sendMoveToServer("left"); break;
+				case RIGHT: playerMoved(+1,0,"right"); Client.sendMoveToServer("right"); break;
 				case ESCAPE:System.exit(0); 
 				default: break;
 				}
 			});
 			
             // Putting default players on screen
-			for (int i = 0; i< GameLogic.players.size(); i++) {
-			  fields[GameLogic.players.get(i).getXpos()][GameLogic.players.get(i).getYpos()].setGraphic(new ImageView(hero_up));
+			for (int i = 0; i< gameLogic.players.size(); i++) {
+			  fields[gameLogic.players.get(i).getXpos()][gameLogic.players.get(i).getYpos()].setGraphic(new ImageView(hero_up));
 			}
 			scoreList.setText(getScoreList());
 		} catch(Exception e) {
@@ -167,7 +167,7 @@ public class Gui extends Application {
 	
 	public String getScoreList() {
 		StringBuffer b = new StringBuffer(100);
-		for (Player p : GameLogic.players) {
+		for (Player p : gameLogic.players) {
 			b.append(p+"\r\n");
 		}
 		return b.toString();

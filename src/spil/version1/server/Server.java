@@ -2,6 +2,7 @@ package spil.version1.server;
 
 import spil.version1.gamefiles.ConcurrentArrayList;
 import spil.version1.gamefiles.GameLogic;
+import spil.version1.gamefiles.Player;
 import spil.version1.interfaces.IEGameLogic;
 
 import java.io.*;
@@ -34,6 +35,11 @@ public class Server {
 				long ting = System.nanoTime();
 				gameLogic.movePlayers(actions);
 				try {
+					sendBytesBack();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+				try {
 					Thread.sleep(8-(ting/1_000_000));
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
@@ -59,9 +65,12 @@ public class Server {
 						int i = sizeOfSockets();
 						connections[i] = connectionSocket;
 						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+
+						DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 						String message = read.readLine();
 
-						gameLogic.makePlayer(message.split(" ")[2]);
+						Player p = gameLogic.makePlayer(message.split(" ")[2]);
+						outToClient.writeBytes("tilmeldt " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + "\n");
 						new ServerThread(connectionSocket, actions).start();
 					}
 				} catch (IOException e) {
@@ -82,8 +91,35 @@ public class Server {
 		return size;
 	}
 
-	private static void sendBytesBack(){
+	private static void sendBytesBack() throws IOException {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
+			out.writeObject(players);
+			out.write("n\"".getBytes());
 
+			byte[] bytes = bos.toByteArray();
+			for (Socket s: connections){
+				DataOutputStream outToClient = new DataOutputStream(s.getOutputStream());
+				outToClient.write(bytes);
+				System.out.println("Players object serialized. ");
+			}
+		} catch (IOException ex) {
+			System.out.println("Error serializing object");
+			System.out.println(ex.getMessage());
+		}
+	}
+
+	// hjælpemetode
+	static byte[] serialize(final Object obj) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
+			out.writeObject(obj);
+			out.flush();
+			return bos.toByteArray();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 }

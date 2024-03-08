@@ -10,10 +10,10 @@ import java.util.Random;
 
 
 public class GameLogic implements IEGameLogic {
-public static List<Player> players = new ArrayList<>();
+public List<Player> players = new ArrayList<>();
 
 	
-	
+
 	public Player makePlayer(String name) {
 		Player me;
 		pair p=getRandomFreePosition();
