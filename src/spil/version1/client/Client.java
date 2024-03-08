@@ -3,6 +3,7 @@ package spil.version1.client;
 import spil.version1.gamefiles.ConcurrentArrayList;
 import spil.version1.gamefiles.GameLogic;
 import spil.version1.gamefiles.Player;
+import spil.version1.interfaces.IEGameLogic;
 
 import java.io.*;
 import java.net.Socket;
@@ -106,7 +107,7 @@ public class Client{
 		} catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        GameLogic.players = playersList.asArrayList();
+        serverBoard = playersList;
 	}
 
 	public static void sendMoveToServer(String move) {
