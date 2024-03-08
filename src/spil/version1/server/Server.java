@@ -11,12 +11,13 @@ import java.net.Socket;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import static eksempel.spil.GameLogic.players;
+
 
 public class Server {
 
 	static Queue<String> actions = new PriorityQueue<>();
 	static IEGameLogic gameLogic = new ServerGameLogic();
-	static ConcurrentArrayList players = new ConcurrentArrayList();
 	static Socket[] connections = new Socket[5];
 	static ObjectOutputStream[]	objectToClient = new ObjectOutputStream[5];
 	/**
