@@ -23,8 +23,7 @@ public class Client{
 	public static void main(String argv[]) throws Exception{
 
 		System.out.println("Indtast spillernavn");
-		String navn;
-		navn = inFromUser.readLine();
+		String navn = inFromUser.readLine();
 		navnGlobal = navn;
 
 		try {
