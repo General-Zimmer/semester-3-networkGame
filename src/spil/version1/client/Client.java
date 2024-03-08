@@ -21,6 +21,12 @@ public class Client{
 	private static BufferedReader inFromServer;
 
 	public static void main(String argv[]) throws Exception{
+
+		System.out.println("Indtast spillernavn");
+		String navn;
+		navn = inFromUser.readLine();
+		navnGlobal = navn;
+
 		try {
 			clientSocket = new Socket("localhost",1337);
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
@@ -28,12 +34,6 @@ public class Client{
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
-
-		System.out.println("Indtast spillernavn");
-		String navn = null;
-		navn = inFromUser.readLine();
-		navnGlobal = navn;
 
 
 		outToServer.writeBytes("arnold tilmed "+ navn+"\n");
