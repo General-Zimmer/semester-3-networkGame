@@ -24,13 +24,15 @@ public class Client{
 	static ObjectOutputStream objectOutToServer;
 
 	public static void main(String argv[]) throws Exception{
+		GuiThread gui = new GuiThread();
+		gui.start();
 
 		System.out.println("Indtast spillernavn");
 		String navn = inFromUser.readLine();
 		navnGlobal = navn;
 
 		try {
-			clientSocket = new Socket("10.10.137.213",1337);
+			clientSocket = new Socket("10.10.137.219",1337);
 			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
@@ -61,8 +63,7 @@ public class Client{
 //		ObjectInputStream objectMap = new ObjectInputStream(inputStream);
 //		ConcurrentArrayList playersList = (ConcurrentArrayList) objectMap.readObject();
 
-		GuiThread gui = new GuiThread();
-		gui.start();
+
 		System.out.println("gui åbenet");
 
 		System.out.println("ind i uendelig loop");
