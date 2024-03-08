@@ -30,6 +30,7 @@ public class Gui extends Application {
 	public static Image image_wall;
 	public static Image hero_right,hero_left,hero_up,hero_down;
 
+	GameLogic gameLogic = (GameLogic) App.gameLogic;
 	
 
 	private static Label[][] fields;
@@ -161,7 +162,7 @@ public class Gui extends Application {
 			});
 	}
 	public void playerMoved(int delta_x, int delta_y, String direction) {
-		GameLogic.updatePlayer(App.me,delta_x,delta_y,direction);
+		gameLogic.updatePlayer(App.me,delta_x,delta_y,direction);
 		updateScoreTable();
 	}
 	

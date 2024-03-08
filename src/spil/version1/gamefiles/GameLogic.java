@@ -1,5 +1,7 @@
 package spil.version1.gamefiles;
 
+import spil.version1.interfaces.IEGameLogic;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -7,26 +9,26 @@ import java.util.Random;
 
 
 
-public class GameLogic {
-public static List<Player> players = new ArrayList<Player>();
+public class GameLogic implements IEGameLogic {
+public static List<Player> players = new ArrayList<>();
 
 	
 	
-	public static Player makePlayer(String name) {
+	public Player makePlayer(String name) {
 		Player me;
 		pair p=getRandomFreePosition();
 		me = new Player(name,p,"up");
 		players.add(me);
 		return me;
-	};	
+	}
 	
-	public static void makeVirtualPlayer()	{    // just demo/testing player - not in real game 
+	public void makeVirtualPlayer()	{    // just demo/testing player - not in real game
 		pair p=getRandomFreePosition();
 		Player kaj = new Player("Kaj",p,"up");
 		players.add(kaj);
 	}
 	
-	public static pair getRandomFreePosition()
+	public pair getRandomFreePosition()
 	// finds a random new position which is not wall 
 	// and not occupied by other players 
 	{
@@ -51,7 +53,7 @@ public static List<Player> players = new ArrayList<Player>();
 		return p;
 	}
 	
-	public static void updatePlayer(Player me, int delta_x, int delta_y, String direction)
+	public void updatePlayer(Player me, int delta_x, int delta_y, String direction)
 	{
 		me.direction = direction;
 		int x = me.getXpos(),y = me.getYpos();
@@ -81,7 +83,7 @@ public static List<Player> players = new ArrayList<Player>();
 		
 	}
 
-	public static void movePlayers(Queue<String> actions) {
+	public void movePlayers(Queue<String> actions) {
 		for (String action : actions) {
 			String[] hændelse = action.split(" ");
 			Player p = getPlayer(hændelse[1]);
@@ -94,7 +96,7 @@ public static List<Player> players = new ArrayList<Player>();
 		}
 	}
 
-	public static Player getPlayer(String name) {
+	public Player getPlayer(String name) {
 		for (Player p : players) {
 			if (p.name.equals(name)) {
 				return p;
@@ -103,7 +105,7 @@ public static List<Player> players = new ArrayList<Player>();
 		return null;
 	}
 
-	public static Player getPlayerAt(int x, int y) {
+	public Player getPlayerAt(int x, int y) {
 		for (Player p : players) {
 			if (p.getXpos()==x && p.getYpos()==y) {
 				return p;

@@ -2,6 +2,7 @@ package spil.version1.server;
 
 import spil.version1.gamefiles.ConcurrentArrayList;
 import spil.version1.gamefiles.GameLogic;
+import spil.version1.interfaces.IEGameLogic;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -13,7 +14,7 @@ import java.util.Queue;
 public class Server {
 
 	static Queue<String> actions = new PriorityQueue<>();
-
+	static IEGameLogic gameLogic = new GameLogic();
 	static ConcurrentArrayList players = new ConcurrentArrayList();
 	static Socket[] connections = new Socket[5];
 	/**
@@ -31,7 +32,7 @@ public class Server {
 		public void run() {
 			while (true) {
 				long ting = System.nanoTime();
-				GameLogic.movePlayers(actions);
+				gameLogic.movePlayers(actions);
 				try {
 					Thread.sleep(8-(ting/1_000_000));
 				} catch (InterruptedException e) {
@@ -60,7 +61,7 @@ public class Server {
 						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 						String message = read.readLine();
 
-						GameLogic.makePlayer(message.split(" ")[2]);
+						gameLogic.makePlayer(message.split(" ")[2]);
 						new ServerThread(connectionSocket, actions).start();
 					}
 				} catch (IOException e) {
