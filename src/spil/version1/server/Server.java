@@ -3,9 +3,7 @@ package spil.version1.server;
 import spil.version1.gamefiles.ConcurrentArrayList;
 import spil.version1.gamefiles.GameLogic;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.PriorityQueue;
@@ -81,6 +79,10 @@ public class Server {
             }
         }
 		return size;
+	}
+
+	private static void sendBytesBack(){
+
 	}
 
 }
