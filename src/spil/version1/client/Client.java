@@ -11,7 +11,6 @@ import java.net.Socket;
 // Denne er kun medtaget til Test-formål, skal IKKE anvendes.
 public class Client{
 	public static Player me;
-
 	public static String navnGlobal;
 	public static ConcurrentArrayList serverBoard = null;
 	public static GameLogic localLogic = new GameLogic();
@@ -43,7 +42,7 @@ public class Client{
 		while(wait){//vente på svar fra server
 			String message = inFromServer.readLine();
 
-			if(message.equals(navn+ " tilmeldt")){
+			if(message.startsWith("tilmeldt " + navnGlobal)){
 				wait=false;
 			}else if(message.equals(navn+ " afvist")){
 				System.out.println("Server afviste spiller");
@@ -51,18 +50,20 @@ public class Client{
 			}
 		}
 
-		String stringRead = inFromServer.readLine();
-		FileInputStream inputStream = new FileInputStream(stringRead);
-		ObjectInputStream objectMap = new ObjectInputStream(inputStream);
-		ConcurrentArrayList playersList = (ConcurrentArrayList) objectMap.readObject();
+		System.out.println("stoppet med at vente");
 
-		serverBoard = playersList;
+//		String stringRead = inFromServer.readLine();
+//		FileInputStream inputStream = new FileInputStream(stringRead);
+//		ObjectInputStream objectMap = new ObjectInputStream(inputStream);
+//		ConcurrentArrayList playersList = (ConcurrentArrayList) objectMap.readObject();
 
 		GuiThread gui = new GuiThread();
 		gui.start();
+		System.out.println("gui åbenet");
 
 		me= localLogic.makePlayer(navn);
 
+		System.out.println("ind i uendelig loop");
 		while(true){
 			readBoardFromServer();
 
@@ -79,6 +80,7 @@ public class Client{
 		ObjectInputStream objectMap = null;
 		ConcurrentArrayList playersList = null;
 
+		System.out.println("læsr board nu");
 		try {
 			stringRead = inFromServer.readLine();
 			inputStream = new FileInputStream(stringRead);
@@ -89,6 +91,8 @@ public class Client{
 		} catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+
+		System.out.println("board læst");
         serverBoard = playersList;
 	}
 

@@ -161,7 +161,7 @@ public class Gui extends Application{
 			});
 	}
 	public void playerMoved(int delta_x, int delta_y, String direction) {
-		gameLogic.updatePlayer(GuiThread.me,delta_x,delta_y,direction);
+		gameLogic.updatePlayer(Client.me,delta_x,delta_y,direction);
 		updateScoreTable();
 	}
 	
