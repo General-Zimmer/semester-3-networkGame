@@ -25,6 +25,7 @@ public class Server {
 
 		new JoinThread().start();
 
+		new gameTickThread().start();
 
 
 	}
