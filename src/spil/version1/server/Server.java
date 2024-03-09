@@ -93,6 +93,7 @@ public class Server {
 				}
 
 				outToClient.writeObject(gameLogic.getPlayers());
+				System.out.println(gameLogic.getPlayers().toString());
 				System.out.println("Players object serialized. ");
 			}
 		} catch (IOException ex) {

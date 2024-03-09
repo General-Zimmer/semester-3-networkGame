@@ -31,7 +31,7 @@ public class Client{
 		GuiThread gui = new GuiThread();
 		gui.start();
 
-		Thread.sleep(500);//lade gui fields initialisere
+		Thread.sleep(1000);//lade gui fields initialisere
 
 		try {
 			clientSocket = new Socket("192.168.1.8",1337);
