@@ -32,7 +32,7 @@ public class Client{
 		navnGlobal = navn;
 
 		try {
-			clientSocket = new Socket("10.10.137.219",1337);
+			clientSocket = new Socket("192.168.1.8",1337);
 			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
@@ -81,8 +81,6 @@ public class Client{
 	public static boolean readBoardFromServer() {
 		List<Player> playersList;
 
-
-		System.out.println("læsr board nu");
 		try {
 			playersList = (List<Player>) objectInFromServer.readObject();
 		} catch (IOException e) {
@@ -91,13 +89,13 @@ public class Client{
             throw new RuntimeException(e);
         }
 
-		System.out.println("board læst " + playersList.size());
+		System.out.println("Antal spillere: " + playersList.size());
+
         serverBoard = playersList;
 		return true;
 	}
 
 	public static void sendMoveToServer(String move) {
-		System.out.println("sendte et move");
 		try {
 			outToServer.writeBytes("arnold " + navnGlobal+ " " + move+ "\n");
 			outToServer.flush();
@@ -125,10 +123,10 @@ public class Client{
 	public static void updateLocalBoard(){
 		localLogic.players = serverBoard;
 		//TODO: opdater localGameLogic boarded, med gameLogics's updatePlayer metode...
-		System.out.println("TESTLSEKTJL: " + serverBoard.size());
 		for(int i = 0; i < localLogic.players.size();  i++) {
-			localLogic.updatePlayer(localLogic.players.get(i), 0, 0, serverBoard.get(i).getDirection());
-			System.out.println("spillr opdateret i gui");
+			Player p = localLogic.players.get(i);
+			localLogic.updatePlayer(p, 0, 0, serverBoard.get(i).getDirection());
+			System.out.println("Spiller: " + p.getName() + ", X: " + p.getXpos() + ", Y: " + p.getYpos());
 		}
 	}
 
