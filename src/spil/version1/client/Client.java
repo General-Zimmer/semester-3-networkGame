@@ -53,28 +53,14 @@ public class Client{
 			if(message.startsWith("tilmeldt " + navnGlobal)){
 				wait=false;
 			}else if(message.equals(navn+ " afvist")){
-				System.out.println("Server afviste spiller");
 				return;
 			}
 		}
 
-		System.out.println("stoppet med at vente");
-
-//		String stringRead = inFromServer.readLine();
-//		FileInputStream inputStream = new FileInputStream(stringRead);
-//		ObjectInputStream objectMap = new ObjectInputStream(inputStream);
-//		ConcurrentArrayList playersList = (ConcurrentArrayList) objectMap.readObject();
-
-
-		System.out.println("gui åbenet");
-
-		System.out.println("ind i uendelig loop");
 		while(true){
 			if (readBoardFromServer()) {
 				updateLocalBoard();
 			}
-
-
 			Thread.sleep(8);
 		}
 	}
@@ -106,25 +92,9 @@ public class Client{
 		}
 	}
 
-//	public static void updateLocalBoard2(){
-//		//TODO: opdater localGameLogic boarded, med gameLogics's updatePlayer metode...
-//		System.out.println("TESTLSEKTJL: " + serverBoard.size());
-//		for(int i = 0; i < serverBoard.size(); i++) {
-//			if(localLogic.getPlayer(serverBoard.asArrayList().get(i).getName()) == null) {
-//				Player playerServer = serverBoard.asArrayList().get(i);
-//				Player playerNew = localLogic.makePlayer(serverBoard.asArrayList().get(i).getName());
-//				playerNew.setLocation(playerServer.getLocation());
-//				System.out.println("ny spiller i spil");
-//			}
-//			int deltaX = localLogic.players.get(i).getXpos() - serverBoard.asArrayList().get(i).getXpos();
-//			int deltaY = localLogic.players.get(i).getYpos() - serverBoard.asArrayList().get(i).getYpos();
-//			localLogic.updatePlayer(serverBoard.asArrayList().get(i), deltaX, deltaY, serverBoard.asArrayList().get(i).getDirection());
-//			System.out.println("spillr opdateret i gui");
-//		}
-//	}
 	public static void updateLocalBoard(){
 		localLogic.players = serverBoard;
-		//TODO: opdater localGameLogic boarded, med gameLogics's updatePlayer metode...
+
 		for(int i = 0; i < localLogic.players.size();  i++) {
 			Player p = localLogic.players.get(i);
 			localLogic.updatePlayer(p, 0, 0, serverBoard.get(i).getDirection());
@@ -133,7 +103,7 @@ public class Client{
 	}
 
 	public static Player getME() {
-		for (Player p : serverBoard) {
+		for (Player p : localLogic.players) {
 			if(p.getName().equals(navnGlobal)) return p;
 		}
 		return null;
