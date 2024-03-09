@@ -24,12 +24,12 @@ public class Client{
 	static ObjectOutputStream objectOutToServer;
 
 	public static void main(String argv[]) throws Exception{
-		GuiThread gui = new GuiThread();
-		gui.start();
-
 		System.out.println("Indtast spillernavn");
 		String navn = inFromUser.readLine();
 		navnGlobal = navn;
+
+		GuiThread gui = new GuiThread();
+		gui.start();
 
 		try {
 			clientSocket = new Socket("192.168.1.8",1337);
