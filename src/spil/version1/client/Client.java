@@ -103,7 +103,7 @@ public class Client{
 	}
 
 	public static Player getME() {
-		for (Player p : localLogic.players) {
+		for (Player p : serverBoard) {
 			if(p.getName().equals(navnGlobal)) return p;
 		}
 		return null;
