@@ -53,7 +53,7 @@ public class Gui extends Application{
 			GridPane grid = new GridPane();
 			grid.setHgap(10);
 			grid.setVgap(10);
-			grid.setPadding(new Insets(0, 10, 0, 10));
+			grid.setPadding(new Insets(10, 10, 10, 10));
 
 			Text mazeLabel = new Text("Maze:");
 			mazeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -64,6 +64,7 @@ public class Gui extends Application{
 			scoreList = new TextArea();
 			
 			GridPane boardGrid = new GridPane();
+
 
 			image_wall  = new Image(getClass().getResourceAsStream("Image/wall4.png"),size,size,false,false);
 			image_floor = new Image(getClass().getResourceAsStream("Image/floor1.png"),size,size,false,false);

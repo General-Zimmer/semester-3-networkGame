@@ -3,16 +3,20 @@ package spil.version1.gamefiles;
 import java.io.Serializable;
 
 public class Player implements Serializable {
+	private static int nrOfPlayers = 0;
 	String name;
 	pair location;
 	int point;
 	public String direction;
+	public int id;
 
 	public Player(String name, pair loc, String direction) {
 		this.name = name;
 		this.location = loc;
 		this.direction = direction;
 		this.point = 0;
+		nrOfPlayers++;
+		this.id = nrOfPlayers;
 	};
 	
 	public pair getLocation() {
@@ -50,5 +54,9 @@ public class Player implements Serializable {
 
 	public String getName() {
 		return name;
+	}
+
+	public int getId() {
+		return id;
 	}
 }
