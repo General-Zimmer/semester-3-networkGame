@@ -42,7 +42,7 @@ public class Client{
 		}
 
 
-		outToServer.writeBytes("arnold tilmed "+ navn+"\n");
+		outToServer.writeBytes("arnold tilmeld "+ navn+"\n");
 
 		boolean wait = true;
 		while(wait){//vente på svar fra server
@@ -82,7 +82,7 @@ public class Client{
 		List<Player> playersList;
 
 
-		System.out.println("læsr board nu");
+		System.out.println("læser board nu");
 		try {
 			playersList = (List<Player>) objectInFromServer.readObject();
 		} catch (IOException e) {
@@ -128,7 +128,7 @@ public class Client{
 		System.out.println("TESTLSEKTJL: " + serverBoard.size());
 		for(int i = 0; i < localLogic.players.size();  i++) {
 			localLogic.updatePlayer(localLogic.players.get(i), 0, 0, serverBoard.get(i).getDirection());
-			System.out.println("spillr opdateret i gui");
+			System.out.println("spiller opdateret i gui");
 		}
 	}
 
