@@ -23,10 +23,11 @@ public class GameLogic implements IEGameLogic {
 	}
 	
 	public void makeVirtualPlayer()	{    // just demo/testing player - not in real game
-		pair p=getRandomFreePosition();
+		pair p = getRandomFreePosition();
 		Player kaj = new Player("Kaj",p,"up");
 		players.add(kaj);
 	}
+
 	
 	public pair getRandomFreePosition()
 	// finds a random new position which is not wall 
@@ -70,12 +71,12 @@ public class GameLogic implements IEGameLogic {
               pair pa = getRandomFreePosition();
               p.setLocation(pa);
               pair oldpos = new pair(x+delta_x,y+delta_y);
-              Gui.movePlayerOnScreen(oldpos,pa,p.direction);
+              Gui.movePlayerOnScreen(oldpos, pa, p.direction, p);
 			} else 
 				me.addPoints(1);
 			pair oldpos = me.getLocation();
 			pair newpos = new pair(x+delta_x,y+delta_y);
-			Gui.movePlayerOnScreen(oldpos,newpos,direction);
+			Gui.movePlayerOnScreen(oldpos, newpos, direction, p);
 			me.setLocation(newpos);
 		}
 		
@@ -112,8 +113,9 @@ public class GameLogic implements IEGameLogic {
 		}
 		return null;
 	}
-	
-	
-	
 
+
+	public List<Player> getPlayers() {
+		return players;
+	}
 }

@@ -1,5 +1,6 @@
 package spil.version1.server;
 
+import spil.version1.gamefiles.GameLogic;
 import spil.version1.gamefiles.Player;
 
 import java.io.*;
