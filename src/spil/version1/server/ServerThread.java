@@ -25,6 +25,7 @@ public class ServerThread extends Thread{
 				String clientSentence = "";
 				if (inFromClient.ready()) {
 					clientSentence = inFromClient.readLine();
+					System.out.println("Received: " + clientSentence);
 				}
 
 				if (clientSentence.startsWith("arnold ")) {

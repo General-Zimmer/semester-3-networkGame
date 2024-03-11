@@ -84,7 +84,6 @@ public class ServerGameLogic implements IEGameLogic {
     }
 
     public void movePlayers(Queue<String> actions) {
-        System.out.println(actions.size());
         while (!actions.isEmpty()) {
             String action = actions.poll();
             String[] hændelse = action.split(" ");
@@ -96,7 +95,6 @@ public class ServerGameLogic implements IEGameLogic {
                 case "right": updatePlayer(p,1,0,"right"); break;
             }
         }
-        System.out.println(actions.size());
     }
 
     public Player getPlayer(String name) {
