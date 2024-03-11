@@ -58,17 +58,12 @@ public class Player implements Serializable {
 		point+=p;
 	}
 	public String toString() {
-		return name+":   "+point;
+		return name + " (" + colours[nrOfPlayers - 1] + "): " +point;
 	}
 
 	public String getName() {
 		return name;
 	}
-
-	public String getColour(){
-		return " (" + colours[nrOfPlayers - 1] + "): ";
-	}
-
 	public int getId() {
 		return id;
 	}
