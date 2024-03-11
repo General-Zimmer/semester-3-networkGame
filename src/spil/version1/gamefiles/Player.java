@@ -65,9 +65,6 @@ public class Player implements Serializable {
 		return name;
 	}
 
-	public String getColour(){
-		return " (" + colours[nrOfPlayers - 1] + "): ";
-	}
 
 	public int getId() {
 		return id;
