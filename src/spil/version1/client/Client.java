@@ -34,8 +34,8 @@ public class Client{
 		try {
 			clientSocket = new Socket("10.10.139.3",1337);
 			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
-			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
+			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
