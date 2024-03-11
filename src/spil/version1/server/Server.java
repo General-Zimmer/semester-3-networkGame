@@ -34,7 +34,7 @@ public class Server {
 			double leftOver = 0;
 
 			while (true) {
-				double ting = System.nanoTime();
+				double beforeTime = System.nanoTime();
 				gameLogic.movePlayers(actions);
 				try {
 					sendBytesBack();
@@ -43,7 +43,7 @@ public class Server {
 				}
 				try {
 
-					double timeLeftonTick = 8 - System.nanoTime() - ting / 1_000_000;
+					double timeLeftonTick = 8 - (System.nanoTime() - beforeTime) / 1_000_000;
 					if (timeLeftonTick > 0) {
 						if (leftOver > 0 && leftOver < 8) {
 							leftOver -= 8;
