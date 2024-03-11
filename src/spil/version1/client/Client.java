@@ -73,6 +73,7 @@ public class Client{
 
 		try {
 			playersList = (List<Player>) objectInFromServer.readObject();
+			objectInFromServer.reset();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} catch (ClassNotFoundException e) {
