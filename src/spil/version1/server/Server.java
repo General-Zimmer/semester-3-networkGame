@@ -111,7 +111,7 @@ public class Server {
 
 				new Thread(() -> {
                     try {
-                        objectToClient[i[0]].reset(); // Tilføj dette for at undgå caching af objekter
+                        objectToClient[i[0]].reset(); // todo fix outofbound error
                         synchronized (lock) {
                             objectToClient[i[0]].writeObject(gameLogic.getPlayers());
                         }
