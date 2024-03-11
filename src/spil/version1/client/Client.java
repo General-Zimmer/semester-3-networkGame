@@ -80,7 +80,8 @@ public class Client{
             throw new RuntimeException(e);
         }
 
-		System.out.println("Antal spillere: " + playersList.size());
+		//System.out.println("Antal spillere: " + playersList.size());
+		System.out.println(playersList.toString());
         serverBoard = playersList;
 		return true;
 	}
@@ -100,7 +101,8 @@ public class Client{
 		for(int i = 0; i < localLogic.players.size();  i++) {
 			Player p = localLogic.players.get(i);
 			localLogic.updatePlayer(p, 0, 0, serverBoard.get(i).getDirection());
-			System.out.println("Spiller: " + p.getName() + ", X: " + p.getXpos() + ", Y: " + p.getYpos());
+
+			//System.out.println("Spiller: " + p.getName() + ", X: " + p.getXpos() + ", Y: " + p.getYpos());
 		}
 	}
 
