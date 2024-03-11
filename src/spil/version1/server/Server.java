@@ -30,18 +30,31 @@ public class Server {
 
 	private static class gameTickThread extends Thread {
 		public void run() {
+			double leftOver = 0;
+
 			while (true) {
-				long ting = System.nanoTime();
+				double ting = System.nanoTime();
 				gameLogic.movePlayers(actions);
 				try {
 					sendBytesBack();
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
-				long t = System.nanoTime() - ting;
-				System.out.println(t / 1_000_000 + " ms");
 				try {
-					Thread.sleep(500 - t / 1_000_000);
+
+					double timeLeftonTick = 8 - System.nanoTime() - ting / 1_000_000;
+					if (timeLeftonTick > 0) {
+						if (leftOver > 0 && leftOver < 8) {
+							leftOver -= 8;
+						} else if (leftOver > 0) {
+							Thread.sleep((long) leftOver);
+							leftOver = 0;
+						} else
+							Thread.sleep((long) timeLeftonTick);
+					} else {
+						System.out.println("Server is running behind: " + timeLeftonTick + " and " + leftOver);
+						leftOver += timeLeftonTick;
+					}
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
