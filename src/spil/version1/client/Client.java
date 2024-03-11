@@ -28,6 +28,10 @@ public class Client{
 		String navn = inFromUser.readLine();
 		navnGlobal = navn;
 
+		GuiThread gui = new GuiThread();
+		gui.start();
+
+		Thread.sleep(3000);
 
 		try {
 			clientSocket = new Socket("10.10.137.90",1337);
@@ -53,10 +57,6 @@ public class Client{
 			}
 		}
 
-		readBoardFromServer();
-		updateLocalBoard();
-		GuiThread gui = new GuiThread();
-		gui.start();
 
 		while(true){
 			if (readBoardFromServer()) {
