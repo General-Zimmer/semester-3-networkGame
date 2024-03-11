@@ -12,7 +12,6 @@ import java.util.List;
 // Denne er kun medtaget til Test-formål, skal IKKE anvendes.
 public class Client{
 	public static String navnGlobal;
-	public static List<Player> serverBoard = null;
 	public static GameLogic localLogic = new GameLogic();
 
 	private static final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
@@ -82,7 +81,7 @@ public class Client{
 
 		//System.out.println("Antal spillere: " + playersList.size());
 		System.out.println(playersList.toString());
-        serverBoard = playersList;
+        localLogic.players = playersList;
 		return true;
 	}
 
@@ -97,18 +96,17 @@ public class Client{
 	}
 
 	public static void updateLocalBoard(){
-		localLogic.players = serverBoard;
 
 		for(int i = 0; i < localLogic.players.size();  i++) {
 			Player p = localLogic.players.get(i);
-			localLogic.updatePlayer(p, 0, 0, serverBoard.get(i).getDirection());
+			localLogic.updatePlayer(p, 0, 0, localLogic.players.get(i).getDirection());
 
 			//System.out.println("Spiller: " + p.getName() + ", X: " + p.getXpos() + ", Y: " + p.getYpos());
 		}
 	}
 
 	public static Player getME() {
-		for (Player p : serverBoard) {
+		for (Player p : localLogic.players) {
 			if(p.getName().equals(navnGlobal)) return p;
 		}
 		return null;
