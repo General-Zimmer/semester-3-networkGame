@@ -170,7 +170,7 @@ public class Gui extends Application{
 	public String getScoreList() {
 		StringBuffer b = new StringBuffer(100);
 		for (Player p : gameLogic.players) {
-			b.append(p + "\r\n");
+			b.append(p + p.getColour() + "\r\n");
 		}
 		return b.toString();
 	}
