@@ -71,12 +71,12 @@ public class GameLogic implements IEGameLogic {
               pair pa = getRandomFreePosition();
               p.setLocation(pa);
               pair oldpos = new pair(x+delta_x,y+delta_y);
-              Gui.movePlayerOnScreen(oldpos, pa, p.direction, p);
+              Gui.movePlayerOnScreen(oldpos, pa, me.direction, me);
 			} else 
 				me.addPoints(1);
 			pair oldpos = me.getLocation();
 			pair newpos = new pair(x+delta_x,y+delta_y);
-			Gui.movePlayerOnScreen(oldpos, newpos, direction, p);
+			Gui.movePlayerOnScreen(oldpos, newpos, direction, me);
 			me.setLocation(newpos);
 		}
 		

@@ -106,7 +106,6 @@ public class Client{
 
 	public static Player getME() {
 		for (Player p : serverBoard) {
-			System.out.println(p.getName());
 			if(p.getName().equals(navnGlobal)) return p;
 		}
 		return null;
