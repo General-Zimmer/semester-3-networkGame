@@ -116,7 +116,7 @@ public class Server {
 				System.out.println(gameLogic.getPlayers().toString());
 			}
 		} catch (IOException ex) {
-			if (ex.getMessage().equals("Broken pipe")) {
+			if (ex instanceof SocketException) {
 				System.out.println("Client disconnected");
 				sockets[i] = null;
 				objectToClient[i] = null;
