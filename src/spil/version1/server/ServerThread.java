@@ -9,19 +9,21 @@ public class ServerThread extends Thread{
 	Socket[] sockets;
 
 	Queue<String> actions;
+	BufferedReader[] inFromclients;
 
-	public ServerThread(Socket[] sockets, Queue<String> actions) {
+	public ServerThread(Socket[] sockets, BufferedReader[] inFromclients,Queue<String> actions) {
 		this.sockets = sockets;
 		this.actions = actions;
+		this.inFromclients = inFromclients;
 	}
 	public void run() {
 		try {
-			for (Socket socket : sockets) {
+			for (int i = 0; i < sockets.length; i++) {
+				Socket socket = sockets[i];
 				if (socket == null) {
 					continue;
 				}
-				BufferedReader inFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());
+				BufferedReader inFromClient = inFromclients[i];
 				String clientSentence = "";
 				if (inFromClient.ready()) {
 					clientSentence = inFromClient.readLine();
@@ -30,8 +32,6 @@ public class ServerThread extends Thread{
 
 				if (clientSentence.startsWith("arnold ")) {
 					actions.add(clientSentence);
-				} else {
-					outToClient.writeBytes("Invalid command\n");
 				}
 			}
 		} catch (IOException e) {

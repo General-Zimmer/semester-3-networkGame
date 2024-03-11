@@ -17,6 +17,7 @@ public class Server {
 	static ServerGameLogic gameLogic = new ServerGameLogic();
 	static Socket[] sockets = new Socket[5];
 	static ObjectOutputStream[]	objectToClient = new ObjectOutputStream[5];
+	static BufferedReader[] stringFromClients = new BufferedReader[5];
 	/**
 	 * @param args
 	 */
@@ -26,7 +27,7 @@ public class Server {
 
 		new gameTickThread().start();
 
-		new ServerThread(sockets, actions).start();
+		new ServerThread(sockets, stringFromClients, actions).start();
 
 	}
 
@@ -82,6 +83,7 @@ public class Server {
 						sockets[i] = connectionSocket;
 						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 						objectToClient[i] = new ObjectOutputStream(connectionSocket.getOutputStream());
+						stringFromClients[i] = read;
 
 						DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 						String message = read.readLine();
