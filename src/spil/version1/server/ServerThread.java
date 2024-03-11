@@ -6,26 +6,32 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class ServerThread extends Thread{
-	Socket connSocket;
+	Socket[] sockets;
 
 	Queue<String> actions;
 
-	public ServerThread(Socket connSocket, Queue<String> actions) {
-		this.connSocket = connSocket;
+	public ServerThread(Socket[] sockets, Queue<String> actions) {
+		this.sockets = sockets;
 		this.actions = actions;
 	}
 	public void run() {
 		try {
-			BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connSocket.getInputStream()));
-			DataOutputStream outToClient = new DataOutputStream(connSocket.getOutputStream());
+			for (Socket socket : sockets) {
+				if (socket == null) {
+					continue;
+				}
+				BufferedReader inFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());
+				String clientSentence = "";
+				if (inFromClient.ready()) {
+					clientSentence = inFromClient.readLine();
+				}
 
-			
-			String clientSentence = inFromClient.readLine();
-
-			if (clientSentence.startsWith("arnold ")) {
-				actions.add(clientSentence);
-			} else {
-				outToClient.writeBytes("Invalid command\n");
+				if (clientSentence.startsWith("arnold ")) {
+					actions.add(clientSentence);
+				} else {
+					outToClient.writeBytes("Invalid command\n");
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

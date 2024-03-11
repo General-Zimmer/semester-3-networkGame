@@ -1,6 +1,5 @@
 package spil.version1.server;
 
-import spil.version1.gamefiles.GameLogic;
 import spil.version1.gamefiles.Player;
 
 import java.io.*;
@@ -15,7 +14,7 @@ public class Server {
 
 	static Queue<String> actions = new PriorityQueue<>();
 	static ServerGameLogic gameLogic = new ServerGameLogic();
-	static Socket[] connections = new Socket[5];
+	static Socket[] sockets = new Socket[5];
 	static ObjectOutputStream[]	objectToClient = new ObjectOutputStream[5];
 	/**
 	 * @param args
@@ -26,6 +25,7 @@ public class Server {
 
 		new gameTickThread().start();
 
+		new ServerThread(sockets, actions).start();
 
 	}
 
@@ -78,7 +78,7 @@ public class Server {
 						connectionSocket.close();
 					} else {
 						int i = sizeOfSockets();
-						connections[i] = connectionSocket;
+						sockets[i] = connectionSocket;
 						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 						objectToClient[i] = new ObjectOutputStream(connectionSocket.getOutputStream());
 
@@ -87,7 +87,6 @@ public class Server {
 
 						Player p = gameLogic.makePlayer(message.split(" ")[2]);
 						outToClient.writeBytes("tilmeldt " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + "\n");
-						new ServerThread(connectionSocket, actions).start();
 					}
 				} catch (IOException e) {
 					throw new RuntimeException(e);
@@ -99,8 +98,8 @@ public class Server {
 
 	private static void sendBytesBack() throws IOException {
 		try {
-			for (int i = 0; i < connections.length; i++) {
-				Socket s = connections[i];
+			for (int i = 0; i < sockets.length; i++) {
+				Socket s = sockets[i];
 				ObjectOutputStream outToClient = objectToClient[i];
 				if (s == null) {
 					continue;
@@ -116,27 +115,36 @@ public class Server {
 		}
 	}
 
+	private static class getActionsThread extends Thread {
+		public void run() {
+			while (true) {
+				try {
+					for (Socket connection : sockets) {
+						if (connection == null) {
+							continue;
+						}
+						BufferedReader inFromUser = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+						if (inFromUser.ready()) {
+							String sentence = inFromUser.readLine();
+							actions.add(sentence);
+						}
+					}
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+	}
+
 
 	private static int sizeOfSockets() {
 		int size = 0;
-		for (Socket connection : connections) {
+		for (Socket connection : sockets) {
 			if (connection != null) {
 				size++;
 			}
 		}
 		return size;
-	}
-	// hjælpemetode
-	static byte[] serialize(final Object obj) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-		try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
-			out.writeObject(obj);
-			out.flush();
-			return bos.toByteArray();
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
-		}
 	}
 
 }
