@@ -58,7 +58,7 @@ public class Player implements Serializable {
 		point+=p;
 	}
 	public String toString() {
-		return name+":   "+point;
+		return name+":   "+point + ", (" + location.x +", " + location.y +")";
 	}
 
 	public String getName() {

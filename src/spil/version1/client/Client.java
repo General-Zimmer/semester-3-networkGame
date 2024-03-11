@@ -31,7 +31,7 @@ public class Client{
 		GuiThread gui = new GuiThread();
 		gui.start();
 
-		Thread.sleep(1000);
+		Thread.sleep(1500);
 
 		try {
 			clientSocket = new Socket("10.10.137.90",1337);
@@ -87,6 +87,7 @@ public class Client{
 	}
 
 	public static void sendMoveToServer(String move) {
+		System.out.println("SENDTE ET MOVE :D");
 		try {
 			outToServer.writeBytes("arnold " + navnGlobal+ " " + move+ "\n");
 			outToServer.flush();
