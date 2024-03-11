@@ -5,6 +5,7 @@ import spil.version1.gamefiles.Player;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -97,8 +98,9 @@ public class Server {
 	}
 
 	private static void sendBytesBack() throws IOException {
+		int i = 0;
 		try {
-			for (int i = 0; i < sockets.length; i++) {
+			for (; i < sockets.length; i++) {
 				Socket s = sockets[i];
 				ObjectOutputStream outToClient = objectToClient[i];
 				if (s == null) {
@@ -108,10 +110,15 @@ public class Server {
 				outToClient.writeObject(gameLogic.getPlayers());
 				//System.out.println("Players object serialized. ");
 				//System.out.println("Player str: " + gameLogic.getPlayers().size());
-				System.out.println( gameLogic.getPlayers().toString());
+				System.out.println(gameLogic.getPlayers().toString());
 			}
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			if (ex.getMessage().equals("Broken pipe")) {
+				System.out.println("Client disconnected");
+				sockets[i] = null;
+				objectToClient[i] = null;
+			} else
+				ex.printStackTrace();
 		}
 	}
 
