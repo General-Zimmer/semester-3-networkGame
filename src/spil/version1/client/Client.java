@@ -1,7 +1,9 @@
 package spil.version1.client;
 
+import javafx.application.Platform;
 import spil.version1.gamefiles.ConcurrentArrayList;
 import spil.version1.gamefiles.GameLogic;
+import spil.version1.gamefiles.Gui;
 import spil.version1.gamefiles.Player;
 import spil.version1.interfaces.IEGameLogic;
 
@@ -56,33 +58,25 @@ public class Client{
 		}
 
 
-		while(true){
+		while(true) {
 			if (readBoardFromServer()) {
-				updateLocalBoard();
+				updateLocalBoard(); // Opdater GUI baseret på den modtagne spiltilstand
 			}
-
-
-			Thread.sleep(8);
+			Thread.sleep(8); // Justér dette tal baseret på dit behov
 		}
+
 	}
 
 
 	public static boolean readBoardFromServer() {
-		List<Player> playersList;
-
-
 		try {
-			playersList = (List<Player>) objectInFromServer.readObject();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-		//System.out.println("Antal spillere: " + playersList.size());
-		System.out.println(playersList.toString());
-        localLogic.players = playersList;
-		return true;
+			List<Player> playersList = (List<Player>) objectInFromServer.readObject();
+			localLogic.players = playersList; // Opdaterer spillerlisten
+			return true;
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public static void sendMoveToServer(String move) {
@@ -94,14 +88,16 @@ public class Client{
 		}
 	}
 
-	public static void updateLocalBoard(){
+	public static void updateLocalBoard() {
+		Platform.runLater(() -> {
+			// Rens GUI før opdatering
+			Gui.clearBoard();
 
-		for(int i = 0; i < localLogic.players.size();  i++) {
-			Player p = localLogic.players.get(i);
-			localLogic.updatePlayer(p, 0, 0, localLogic.players.get(i).getDirection());
-
-			//System.out.println("Spiller: " + p.getName() + ", X: " + p.getXpos() + ", Y: " + p.getYpos());
-		}
+			// Opdater GUI med hver spillers nuværende position
+			for (Player player : localLogic.players) {
+				Gui.placePlayerOnScreen(player.getLocation(), player.getDirection(), player);
+			}
+		});
 	}
 
 	public static Player getME() {
