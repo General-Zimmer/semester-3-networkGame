@@ -34,7 +34,7 @@ public class Client{
 
 
 		try {
-			clientSocket = new Socket("10.10.139.3",1337);
+			clientSocket = new Socket("10.10.131.68",1337);
 			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
 			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
