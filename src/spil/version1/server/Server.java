@@ -18,6 +18,7 @@ public class Server {
 	static Socket[] sockets = new Socket[5];
 	static ObjectOutputStream[]	objectToClient = new ObjectOutputStream[5];
 	static BufferedReader[] stringFromClients = new BufferedReader[5];
+	static final Object lock = new Object();
 	/**
 	 * @param args
 	 */
@@ -86,8 +87,10 @@ public class Server {
 						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 
 						String message = read.readLine();
-
-						Player p = gameLogic.makePlayer(message.split(" ")[2]);
+						Player p;
+						synchronized (lock){
+							p = gameLogic.makePlayer(message.split(" ")[2]);
+						}
 						outToClient.writeBytes("tilmeldt " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + "\n");
 						objectToClient[i] = objectOutToServer;
 						stringFromClients[i] = read;
@@ -102,19 +105,25 @@ public class Server {
 	}
 
 	private static void sendBytesBack() throws IOException {
-		for (int i = 0; i < sockets.length; i++) {
-			Socket s = sockets[i];
+		for (int[] i = new int[1]; i[0] < sockets.length; i[0]++) {
+			Socket s = sockets[i[0]];
 			if (s != null && !s.isClosed()) {
-				try {
-					objectToClient[i].reset(); // Tilføj dette for at undgå caching af objekter
-					objectToClient[i].writeObject(gameLogic.getPlayers());
-					objectToClient[i].flush();
-				} catch (IOException e) {
-					e.printStackTrace(); // Håndter afbrudte forbindelser her
+
+				new Thread(() -> {
+                    try {
+                        objectToClient[i[0]].reset(); // Tilføj dette for at undgå caching af objekter
+                        synchronized (lock) {
+                            objectToClient[i[0]].writeObject(gameLogic.getPlayers());
+                        }
+                        objectToClient[i[0]].flush();
+                    } catch (IOException e) {
+                        e.printStackTrace(); // Håndter afbrudte forbindelser her
+                    }
+                }).start();
 				}
+
 			}
 		}
-	}
 
 
 	private static class getActionsThread extends Thread {
@@ -137,6 +146,7 @@ public class Server {
 			}
 		}
 	}
+
 
 
 	private static int sizeOfSockets() {
