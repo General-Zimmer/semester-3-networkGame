@@ -58,7 +58,7 @@ public class Player implements Serializable {
 		point+=p;
 	}
 	public String toString() {
-		return name+":   "+point + ", (" + location.x +", " + location.y +"), " +  colours[nrOfPlayers] ;
+		return name + ", " + colours[nrOfPlayers - 1] + ":   " + point + ", (" + location.x +", " + location.y +")";
 	}
 
 	public String getName() {
