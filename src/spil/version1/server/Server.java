@@ -32,7 +32,7 @@ public class Server {
 	private static class gameTickThread extends Thread {
 		public void run() {
 			double leftOver = 0;
-
+			double msPerTick = 500;
 			while (true) {
 				double beforeTime = System.nanoTime();
 				gameLogic.movePlayers(actions);
@@ -43,10 +43,10 @@ public class Server {
 				}
 				try {
 
-					double timeLeftonTick = 8 - (System.nanoTime() - beforeTime) / 1_000_000;
+					double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) / 1_000_000;
 					if (timeLeftonTick > 0) {
-						if (leftOver > 0 && leftOver < 8) {
-							leftOver -= 8;
+						if (leftOver > 0 && leftOver < msPerTick) {
+							leftOver -= msPerTick;
 						} else if (leftOver > 0) {
 							Thread.sleep((long) leftOver);
 							leftOver = 0;
