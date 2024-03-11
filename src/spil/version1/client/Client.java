@@ -24,15 +24,17 @@ public class Client{
 	static ObjectOutputStream objectOutToServer;
 
 	public static void main(String argv[]) throws Exception{
-		GuiThread gui = new GuiThread();
-		gui.start();
-
 		System.out.println("Indtast spillernavn");
 		String navn = inFromUser.readLine();
 		navnGlobal = navn;
 
+		GuiThread gui = new GuiThread();
+		gui.start();
+
+		Thread.sleep(1000);
+
 		try {
-			clientSocket = new Socket("10.10.131.4",1337);
+			clientSocket = new Socket("10.10.137.90",1337);
 			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
@@ -104,6 +106,7 @@ public class Client{
 
 	public static Player getME() {
 		for (Player p : serverBoard) {
+			System.out.println(p.getName());
 			if(p.getName().equals(navnGlobal)) return p;
 		}
 		return null;

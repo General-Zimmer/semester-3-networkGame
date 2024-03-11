@@ -16,7 +16,7 @@ public class Player implements Serializable {
 	public String heroDownIconPath;
 
 	public Player(String name, pair loc, String direction) {
-		this.name = name + " " + colours[nrOfPlayers];
+		this.name = name;//+ " " + colours[nrOfPlayers];
 		this.location = loc;
 		this.direction = direction;
 		this.point = 0;
