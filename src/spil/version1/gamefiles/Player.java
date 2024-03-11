@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Player implements Serializable {
 	private static int nrOfPlayers = 0;
+	private static String[] colours = new String[]{"(white)", "(red)", "(yellow)", "(blue)", "(green)"};
 	String name;
 	pair location;
 	int point;
@@ -15,7 +16,7 @@ public class Player implements Serializable {
 	public String heroDownIconPath;
 
 	public Player(String name, pair loc, String direction) {
-		this.name = name;
+		this.name = name + " " + colours[nrOfPlayers];
 		this.location = loc;
 		this.direction = direction;
 		this.point = 0;
