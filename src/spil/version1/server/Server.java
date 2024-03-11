@@ -103,27 +103,20 @@ public class Server {
 	}
 
 	private static void sendBytesBack() throws IOException {
-		int i = 0;
-		try {
-			for (; i < sockets.length; i++) {
-				Socket s = sockets[i];
-				ObjectOutputStream outToClient = objectToClient[i];
-				if (s == null) {
-					continue;
+		for (int i = 0; i < sockets.length; i++) {
+			Socket s = sockets[i];
+			if (s != null && !s.isClosed()) {
+				try {
+					objectToClient[i].reset(); // Tilføj dette for at undgå caching af objekter
+					objectToClient[i].writeObject(gameLogic.getPlayers());
+					objectToClient[i].flush();
+				} catch (IOException e) {
+					e.printStackTrace(); // Håndter afbrudte forbindelser her
 				}
-
-				outToClient.writeObject(gameLogic.getPlayers());
-				System.out.println(gameLogic.getPlayers().toString());
 			}
-		} catch (IOException ex) {
-			if (ex instanceof SocketException) {
-				System.out.println("Client disconnected");
-				sockets[i] = null;
-				objectToClient[i] = null;
-			} else
-				ex.printStackTrace();
 		}
 	}
+
 
 	private static class getActionsThread extends Thread {
 		public void run() {
