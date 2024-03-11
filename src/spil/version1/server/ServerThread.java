@@ -18,20 +18,23 @@ public class ServerThread extends Thread{
 	}
 	public void run() {
 		try {
-			for (int i = 0; i < sockets.length; i++) {
-				Socket socket = sockets[i];
-				if (socket == null) {
-					continue;
-				}
-				BufferedReader inFromClient = inFromclients[i];
-				String clientSentence = "";
-				if (inFromClient.ready()) {
-					clientSentence = inFromClient.readLine();
-					System.out.println("Received: " + clientSentence);
-				}
+			while (true) {
+				for (int i = 0; i < sockets.length; i++) {
 
-				if (clientSentence.startsWith("arnold ")) {
-					actions.add(clientSentence);
+					Socket socket = sockets[i];
+					if (socket == null) {
+						continue;
+					}
+					BufferedReader inFromClient = inFromclients[i];
+					String clientSentence = "";
+					if (inFromClient.ready()) {
+						clientSentence = inFromClient.readLine();
+						System.out.println("Received: " + clientSentence);
+					}
+
+					if (clientSentence.startsWith("arnold ")) {
+						actions.add(clientSentence);
+					}
 				}
 			}
 		} catch (IOException e) {

@@ -32,7 +32,7 @@ public class Client{
 
 
 		try {
-			clientSocket = new Socket("10.10.137.90",1337);
+			clientSocket = new Socket("localhost",1337);
 			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
@@ -89,7 +89,6 @@ public class Client{
 		System.out.println("SENDTE ET MOVE :D");
 		try {
 			outToServer.writeBytes("arnold " + navnGlobal+ " " + move+ "\n");
-			outToServer.flush();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

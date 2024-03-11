@@ -79,17 +79,20 @@ public class Server {
 					if (sizeOfSockets() >= 5) {
 						connectionSocket.close();
 					} else {
-						int i = sizeOfSockets();
-						sockets[i] = connectionSocket;
-						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-						objectToClient[i] = new ObjectOutputStream(connectionSocket.getOutputStream());
-						stringFromClients[i] = read;
 
+						int i = sizeOfSockets();
 						DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+						ObjectOutputStream objectOutToServer = new ObjectOutputStream(connectionSocket.getOutputStream());
+						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+
 						String message = read.readLine();
 
+						connectionSocket.setSoTimeout(100);
 						Player p = gameLogic.makePlayer(message.split(" ")[2]);
 						outToClient.writeBytes("tilmeldt " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + "\n");
+						objectToClient[i] = objectOutToServer;
+						stringFromClients[i] = read;
+						sockets[i] = connectionSocket;
 					}
 				} catch (IOException e) {
 					throw new RuntimeException(e);
@@ -110,8 +113,6 @@ public class Server {
 				}
 
 				outToClient.writeObject(gameLogic.getPlayers());
-				//System.out.println("Players object serialized. ");
-				//System.out.println("Player str: " + gameLogic.getPlayers().size());
 				System.out.println(gameLogic.getPlayers().toString());
 			}
 		} catch (IOException ex) {
