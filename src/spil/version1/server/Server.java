@@ -87,7 +87,6 @@ public class Server {
 
 						String message = read.readLine();
 
-						connectionSocket.setSoTimeout(300);
 						Player p = gameLogic.makePlayer(message.split(" ")[2]);
 						outToClient.writeBytes("tilmeldt " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + "\n");
 						objectToClient[i] = objectOutToServer;
