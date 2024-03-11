@@ -1,5 +1,6 @@
 package spil.version1.server;
 
+import spil.version1.gamefiles.GameLogic;
 import spil.version1.gamefiles.Player;
 
 import java.io.*;
@@ -106,7 +107,9 @@ public class Server {
 				}
 
 				outToClient.writeObject(gameLogic.getPlayers());
-				System.out.println("Players object serialized. ");
+				//System.out.println("Players object serialized. ");
+				//System.out.println("Player str: " + gameLogic.getPlayers().size());
+				System.out.println( gameLogic.getPlayers().toString());
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();

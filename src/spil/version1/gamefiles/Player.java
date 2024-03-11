@@ -3,18 +3,31 @@ package spil.version1.gamefiles;
 import java.io.Serializable;
 
 public class Player implements Serializable {
+	private static int nrOfPlayers = 0;
+	private static String[] colours = new String[]{"(white)", "(red)", "(yellow)", "(blue)", "(green)"};
 	String name;
 	pair location;
 	int point;
 	public String direction;
+	public int id;
+	public String heroRightIconPath;
+	public String heroLeftIconPath;
+	public String heroUpIconPath;
+	public String heroDownIconPath;
 
 	public Player(String name, pair loc, String direction) {
 		this.name = name;
 		this.location = loc;
 		this.direction = direction;
 		this.point = 0;
+		nrOfPlayers++;
+		this.id = nrOfPlayers;
+		heroRightIconPath = "Image/heroRight" + id + ".png";
+		heroLeftIconPath = "Image/heroLeft" + id + ".png";
+		heroUpIconPath = "Image/heroUp" + id + ".png";
+		heroDownIconPath = "Image/heroDown" + id + ".png";
 	};
-	
+
 	public pair getLocation() {
 		return this.location;
 	}
@@ -45,10 +58,29 @@ public class Player implements Serializable {
 		point+=p;
 	}
 	public String toString() {
-		return name+":   "+point;
+		return name + " (" + colours[nrOfPlayers - 1] + "): " +point;
 	}
 
 	public String getName() {
 		return name;
+	}
+	public int getId() {
+		return id;
+	}
+
+	public String getHeroRightIconPath() {
+		return heroRightIconPath;
+	}
+
+	public String getHeroLeftIconPath() {
+		return heroLeftIconPath;
+	}
+
+	public String getHeroUpIconPath() {
+		return heroUpIconPath;
+	}
+
+	public String getHeroDownIconPath() {
+		return heroDownIconPath;
 	}
 }
