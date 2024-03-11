@@ -24,14 +24,13 @@ public class Client{
 	static ObjectOutputStream objectOutToServer;
 
 	public static void main(String argv[]) throws Exception{
+		GuiThread gui = new GuiThread();
+		gui.start();
+
 		System.out.println("Indtast spillernavn");
 		String navn = inFromUser.readLine();
 		navnGlobal = navn;
 
-		GuiThread gui = new GuiThread();
-		gui.start();
-
-		Thread.sleep(1500);
 
 		try {
 			clientSocket = new Socket("10.10.137.90",1337);
@@ -56,6 +55,7 @@ public class Client{
 				return;
 			}
 		}
+
 
 		while(true){
 			if (readBoardFromServer()) {
