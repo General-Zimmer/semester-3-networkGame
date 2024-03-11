@@ -26,8 +26,19 @@ public class Player implements Serializable {
 		heroLeftIconPath = "Image/heroLeft" + id + ".png";
 		heroUpIconPath = "Image/heroUp" + id + ".png";
 		heroDownIconPath = "Image/heroDown" + id + ".png";
-	};
+	}
 
+	public Player(String name, pair loc, String direction, int id) {
+		this.name = name;
+		this.location = loc;
+		this.direction = direction;
+		this.point = 0;
+		this.id = id;
+		heroRightIconPath = "Image/heroRight" + id + ".png";
+		heroLeftIconPath = "Image/heroLeft" + id + ".png";
+		heroUpIconPath = "Image/heroUp" + id + ".png";
+		heroDownIconPath = "Image/heroDown" + id + ".png";
+	}
 	public pair getLocation() {
 		return this.location;
 	}
