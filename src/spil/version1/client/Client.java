@@ -32,7 +32,7 @@ public class Client{
 
 
 		try {
-			clientSocket = new Socket("localhost",1337);
+			clientSocket = new Socket("10.10.139.3",1337);
 			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
