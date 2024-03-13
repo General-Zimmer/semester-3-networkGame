@@ -5,46 +5,48 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ConcurrentArrayList implements Iterable<Player>, java.io.Serializable{
-	private List<Player> liste = new ArrayList<Player>();
+	private final List<Player> liste = new ArrayList<Player>();
 	
-	public void add(Player p) {
+	public synchronized void add(Player p) {
 		liste.add(p);	
 	}
 
-	public void remove(Player p) {
+	public synchronized void remove(Player p) {
 		liste.remove(p);	
 	}
 	
-	public void clear() {
+	public synchronized void clear() {
 		liste.clear();
 	}
 	
-	public int size() {
+	public synchronized int size() {
 		return liste.size();
 	}
 
-	public ArrayList<Player> asArrayList(){
+	public synchronized ArrayList<Player> asArrayList(){
 		return new ArrayList<>(liste);
 	}
 
 	@Override
 	public Iterator<Player> iterator() {
 		// TODO Auto-generated method stub
-		return liste.iterator();
-	}
-	/*public class ConcurrentArrayListIterator<Player> implements Iterator<Player> {
+		return new ConcurrentArrayListIterator<>();
+	}public class ConcurrentArrayListIterator<Player> implements Iterator<Player> {
 
+		private int current = 0;
 		@Override
-		public boolean hasNext() {
-			// TODO Auto-generated method stub
-			return false;
+		public  boolean hasNext() {
+			synchronized (liste) {
+				return current < size();
+			}
 		}
 
 		@Override
 		public Player next() {
-			// TODO Auto-generated method stub
-			return null;
+			synchronized (liste) {
+				return (Player) liste.get(current++);
+			}
 		}
 	
-}*/
+}
 }
