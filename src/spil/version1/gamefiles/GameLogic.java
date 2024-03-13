@@ -2,17 +2,13 @@ package spil.version1.gamefiles;
 
 import spil.version1.interfaces.IEGameLogic;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
 
 
 public class GameLogic implements IEGameLogic {
-	public List<Player> players= new ArrayList<>();
-
-	
+	public ConcurrentArrayList players = new ConcurrentArrayList();
 
 	public Player makePlayer(String name) {
 		Player me;
@@ -116,7 +112,7 @@ public class GameLogic implements IEGameLogic {
 	}
 
 
-	public List<Player> getPlayers() {
+	public ConcurrentArrayList getPlayers() {
 		return players;
 	}
 }

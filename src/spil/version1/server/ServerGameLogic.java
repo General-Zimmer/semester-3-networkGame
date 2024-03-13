@@ -117,7 +117,7 @@ public class ServerGameLogic implements IEGameLogic {
     }
 
 
-    public List<Player> getPlayers() {
-        return players.asArrayList();
+    public ConcurrentArrayList getPlayers() {
+        return players;
     }
 }
