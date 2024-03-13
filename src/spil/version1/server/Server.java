@@ -105,17 +105,18 @@ public class Server {
 	}
 
 	private static void sendBytesBack() throws IOException {
-		for (int[] i = new int[1]; i[0] < sockets.length; i[0]++) {
-			Socket s = sockets[i[0]];
+		for (int i = 0; i < sockets.length; i++) {
+			Socket s = sockets[i];
 			if (s != null && !s.isClosed()) {
 
+				int num = i;
 				new Thread(() -> {
                     try {
-                        objectToClient[i[0]].reset(); // todo fix outofbound error
+                        objectToClient[num].reset();
                         synchronized (lock) {
-                            objectToClient[i[0]].writeObject(gameLogic.getPlayers());
+                            objectToClient[num].writeObject(gameLogic.getPlayers());
                         }
-                        objectToClient[i[0]].flush();
+                        objectToClient[num].flush();
                     } catch (IOException e) {
                         e.printStackTrace(); // Håndter afbrudte forbindelser her
                     }
