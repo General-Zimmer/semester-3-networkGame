@@ -111,17 +111,15 @@ public class Server {
 
 				int num = i;
 				new Thread(() -> {
-                    try {
-                        objectToClient[num].reset();
-                        synchronized (lock) {
-                            objectToClient[num].writeObject(gameLogic.getPlayers());
-                        }
-                        objectToClient[num].flush();
-                    } catch (IOException e) {
-                        e.printStackTrace(); // Håndter afbrudte forbindelser her
-                    }
-                }).start();
-				}
+					try {
+						synchronized (lock) {
+							objectToClient[num].writeObject(gameLogic.getPlayers());
+						}
+					} catch (IOException e) {
+						e.printStackTrace(); // Håndter afbrudte forbindelser her
+					}
+				}).start();
+			}
 
 			}
 		}
