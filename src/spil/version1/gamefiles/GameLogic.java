@@ -1,6 +1,5 @@
 package spil.version1.gamefiles;
 
-import spil.version1.interfaces.IEGameLogic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.Random;
 
 
 
-public class GameLogic implements IEGameLogic {
+public class GameLogic {
 	public List<Player> players= new ArrayList<>();
 
 	
