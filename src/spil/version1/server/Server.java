@@ -39,11 +39,7 @@ public class Server {
 			while (true) {
 				double beforeTime = System.nanoTime();
 				gameLogic.movePlayers(actions);
-				try {
-					sendBytesBack();
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
+				sendBytesBack();
 				try {
 
 					double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) / 1_000_000;
@@ -104,49 +100,22 @@ public class Server {
 		}
 	}
 
-	private static void sendBytesBack() throws IOException {
+	private static void sendBytesBack() {
 		for (int i = 0; i < sockets.length; i++) {
 			Socket s = sockets[i];
 			if (s != null && !s.isClosed()) {
 
-				int num = i;
-				new Thread(() -> {
-					try {
-						synchronized (lock) {
-							objectToClient[num].writeObject(gameLogic.getPlayers());
-						}
-					} catch (IOException e) {
-						e.printStackTrace(); // Håndter afbrudte forbindelser her
-					}
-				}).start();
-			}
-
-			}
-		}
-
-
-	private static class getActionsThread extends Thread {
-		public void run() {
-			while (true) {
 				try {
-					for (Socket connection : sockets) {
-						if (connection == null) {
-							continue;
-						}
-						BufferedReader inFromUser = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-						if (inFromUser.ready()) {
-							String sentence = inFromUser.readLine();
-							actions.add(sentence);
-						}
+					synchronized (lock) {
+						objectToClient[i].writeObject(gameLogic.getPlayers());
 					}
 				} catch (IOException e) {
-					throw new RuntimeException(e);
+					e.printStackTrace(); // Håndter afbrudte forbindelser her
 				}
 			}
+
+			}
 		}
-	}
-
-
 
 	private static int sizeOfSockets() {
 		int size = 0;
