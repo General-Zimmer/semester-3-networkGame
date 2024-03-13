@@ -86,15 +86,20 @@ public class Server {
 				}
 				try {
 
+
 					double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) / 1_000_000;
 					if (timeLeftonTick > 0) {
 						if (leftOver > 0 && leftOver < msPerTick) {
 							leftOver -= msPerTick;
 						} else if (leftOver > 0) {
-							this.wait((long) leftOver);
+							synchronized (this) {
+								this.wait((long) leftOver);
+							}
 							leftOver = 0;
 						} else
-							this.wait((long) timeLeftonTick);
+							synchronized (this) {
+								this.wait((long) timeLeftonTick);
+							}
 					} else {
 						System.out.println("Server is running behind: " + timeLeftonTick + " and " + leftOver);
 						leftOver += timeLeftonTick;
