@@ -75,7 +75,7 @@ public class Server {
 	private static class gameTickThread extends Thread {
 		public void run() {
 			double leftOver = 0;
-			double msPerTick = 8;
+			double msPerTick = 30;
 			while (true) {
 				double beforeTime = System.nanoTime();
 				gameLogic.movePlayers(actions);
@@ -118,6 +118,7 @@ public class Server {
 
 				ObjectOutputStream out = objectToClient[i];
 				try {
+					out.reset();
 					out.writeObject(gameLogic.getPlayers());
 				} catch (IOException e) {
 					e.printStackTrace(); // Håndter afbrudte forbindelser her

@@ -19,10 +19,8 @@ public class Client{
 	private static final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
 	private static Socket clientSocket;
 	private static  DataOutputStream outToServer;
-	private static BufferedReader inFromServer;
 
 	static ObjectInputStream objectInFromServer;
-	static ObjectOutputStream objectOutToServer;
 
 	public static void main(String argv[]) throws Exception{
 		GuiThread gui = new GuiThread();
@@ -32,10 +30,9 @@ public class Client{
 		String navn = inFromUser.readLine();
 		navnGlobal = navn;
 
-
+		BufferedReader inFromServer;
 		try {
 			clientSocket = new Socket("localhost",1337);
-			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
 			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -62,7 +59,7 @@ public class Client{
 			if (readBoardFromServer()) {
 				updateLocalBoard(); // Opdater GUI baseret på den modtagne spiltilstand
 			}
-			Thread.sleep(8); // Justér dette tal baseret på dit behov
+			Thread.sleep(30); // Justér dette tal baseret på dit behov
 		}
 
 
