@@ -32,7 +32,7 @@ public class Client{
 
 		BufferedReader inFromServer;
 		try {
-			clientSocket = new Socket("localhost",1337);
+			clientSocket = new Socket("10.10.137.202",1337);
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
 			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
