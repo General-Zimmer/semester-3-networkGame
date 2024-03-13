@@ -17,7 +17,6 @@ public class Server {
 	static Socket[] sockets = new Socket[5];
 	static ObjectOutputStream[]	objectToClient = new ObjectOutputStream[5];
 	static BufferedReader[] stringFromClients = new BufferedReader[5];
-	static final Object lock = new Object();
 	/**
 	 * @param args
 	 */
@@ -55,9 +54,7 @@ public class Server {
 
 						String message = read.readLine();
 						Player p;
-						synchronized (lock){
-							p = gameLogic.makePlayer(message.split(" ")[2]);
-						}
+						p = gameLogic.makePlayer(message.split(" ")[2]);
 						outToClient.writeBytes("tilmeldt " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + "\n");
 						objectToClient[i] = objectOutToServer;
 						stringFromClients[i] = read;
@@ -75,7 +72,7 @@ public class Server {
 	private static class gameTickThread extends Thread {
 		public void run() {
 			double leftOver = 0;
-			double msPerTick = 30;
+			double msPerTick = 8;
 			synchronized (this) {
 				while (true) {
 					double beforeTime = System.nanoTime();
@@ -120,7 +117,6 @@ public class Server {
 
 				ObjectOutputStream out = objectToClient[i];
 				try {
-					out.reset();
 					out.writeObject(gameLogic.getPlayers());
 				} catch (IOException e) {
 					e.printStackTrace(); // Håndter afbrudte forbindelser her
