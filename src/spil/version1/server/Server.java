@@ -15,9 +15,9 @@ public class Server {
 	static Queue<String> actions = new PriorityQueue<>();
 	static ServerGameLogic gameLogic = new ServerGameLogic();
 	static Socket[] sockets = new Socket[5];
-	static ObjectOutputStream[]	objectToClient = new ObjectOutputStream[5];
+	static DataOutputStream[]	objectToClient = new DataOutputStream[5];
 	static BufferedReader[] stringFromClients = new BufferedReader[5];
-	static final Object lock = new Object();
+	static Queue<String> actionToSend = new PriorityQueue<>();
 	/**
 	 * @param args
 	 */
@@ -50,16 +50,14 @@ public class Server {
 
 						int i = sizeOfSockets();
 						DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-						ObjectOutputStream objectOutToServer = new ObjectOutputStream(connectionSocket.getOutputStream());
 						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 
 						String message = read.readLine();
 						Player p;
-						synchronized (lock){
-							p = gameLogic.makePlayer(message.split(" ")[2]);
-						}
+						p = gameLogic.makePlayer(message.split(" ")[2]);
+
 						outToClient.writeBytes("tilmeldt " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + "\n");
-						objectToClient[i] = objectOutToServer;
+						objectToClient[i] = outToClient;
 						stringFromClients[i] = read;
 						sockets[i] = connectionSocket;
 					}
@@ -78,7 +76,7 @@ public class Server {
 			double msPerTick = 8;
 			while (true) {
 				double beforeTime = System.nanoTime();
-				gameLogic.movePlayers(actions);
+				gameLogic.movePlayers(actions, actionToSend);
 				try {
 					sendBytesBack();
 				} catch (IOException e) {
@@ -111,17 +109,26 @@ public class Server {
 		}
 	}
 
-	private static void sendBytesBack() throws IOException {
+	private static void sendBytesBack() {
 		for (int i = 0; i < sockets.length; i++) {
 			Socket s = sockets[i];
 			if (s != null && !s.isClosed()) {
 
-				ObjectOutputStream out = objectToClient[i];
+				DataOutputStream out = objectToClient[i];
+				int size = actionToSend.size();
+
 				try {
-					out.writeObject(gameLogic.getPlayers());
+					out.writeBytes(size + "\n");
+					while (!actionToSend.isEmpty()) {
+						out.writeBytes(actionToSend.poll() + "\n");
+					}
 				} catch (IOException e) {
 					e.printStackTrace(); // Håndter afbrudte forbindelser her
-					s.close();
+					try {
+						s.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 

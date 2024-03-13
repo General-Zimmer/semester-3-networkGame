@@ -10,6 +10,8 @@ import spil.version1.interfaces.IEGameLogic;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 // Denne er kun medtaget til Test-formål, skal IKKE anvendes.
 public class Client{
@@ -20,9 +22,6 @@ public class Client{
 	private static Socket clientSocket;
 	private static  DataOutputStream outToServer;
 	private static BufferedReader inFromServer;
-
-	static ObjectInputStream objectInFromServer;
-	static ObjectOutputStream objectOutToServer;
 
 	public static void main(String argv[]) throws Exception{
 		GuiThread gui = new GuiThread();
@@ -35,9 +34,7 @@ public class Client{
 
 		try {
 			clientSocket = new Socket("localhost",1337);
-			objectOutToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
-			objectInFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -72,16 +69,18 @@ public class Client{
 
 	public static boolean readBoardFromServer() {
 		try {
-			Thread.sleep(8);
-			List<Player> playersList = (List<Player>) objectInFromServer.readObject();
-			localLogic.players = playersList; // Opdaterer spillerlisten
+			int size = Integer.parseInt(inFromServer.readLine());
+			Queue<String> actionToSend = new PriorityQueue<>();
+			for (; size >= 0 ; size--) {
+				String action = inFromServer.readLine();
+				actionToSend.add(action);
+			}
+			localLogic.movePlayers(actionToSend);
 			return true;
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
-		} catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+		}
     }
 
 	public static void sendMoveToServer(String move) {

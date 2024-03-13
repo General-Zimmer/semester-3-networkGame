@@ -87,8 +87,8 @@ public class GameLogic implements IEGameLogic {
 	public void movePlayers(Queue<String> actions) {
 		for (String action : actions) {
 			String[] hændelse = action.split(" ");
-			Player p = getPlayer(hændelse[1]);
-			switch (hændelse[2].toLowerCase()) {
+			Player p = getPlayer(hændelse[0]);
+			switch (hændelse[1].toLowerCase()) {
 			case "up": updatePlayer(p,0,-1,"up"); break;
 			case "down": updatePlayer(p,0,1,"down"); break;
 			case "left": updatePlayer(p,-1,0,"left"); break;

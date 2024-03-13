@@ -83,11 +83,12 @@ public class ServerGameLogic implements IEGameLogic {
 
     }
 
-    public void movePlayers(Queue<String> actions) {
+    public void movePlayers(Queue<String> actions, Queue<String> actionsToSend) {
         while (!actions.isEmpty()) {
             String action = actions.poll();
             String[] hændelse = action.split(" ");
             Player p = getPlayer(hændelse[1]);
+            actionsToSend.add(p.getName() + " " + hændelse[2]);
             switch (hændelse[2].toLowerCase()) {
                 case "up": updatePlayer(p,0,-1,"up"); break;
                 case "down": updatePlayer(p,0,1,"down"); break;
