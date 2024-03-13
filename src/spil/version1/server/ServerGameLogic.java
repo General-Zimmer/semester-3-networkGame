@@ -13,7 +13,7 @@ import java.util.Random;
 
 
 public class ServerGameLogic implements IEGameLogic {
-    public List<Player> players = new ArrayList<>();
+    public final List<Player> players = new ArrayList<>();
 
 
 
