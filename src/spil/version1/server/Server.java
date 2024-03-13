@@ -89,6 +89,7 @@ public class Server {
 
 
 						double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) * 0.000_0001;
+
 						if (timeLeftonTick > 0) {
 							if (leftOver > 0 && leftOver < msPerTick) {
 								leftOver -= msPerTick;
@@ -102,6 +103,8 @@ public class Server {
 							System.out.println("Server is running behind: " + timeLeftonTick + " and " + leftOver);
 							leftOver += timeLeftonTick;
 						}
+						System.out.println("Leftover: " + leftOver);
+						System.out.println("Timeleft: " + timeLeftonTick);
 					} catch(InterruptedException e){
 						throw new RuntimeException(e);
 					}
