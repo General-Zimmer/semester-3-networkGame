@@ -92,7 +92,7 @@ public class Client{
 		Platform.runLater(() -> {
 			// Rens GUI før opdatering
 			Gui.clearBoard();
-
+			Gui.gui.updateScoreTable();
 			// Opdater GUI med hver spillers nuværende position
 			for (Player player : localLogic.players) {
 				Gui.placePlayerOnScreen(player.getLocation(), player.getDirection(), player);

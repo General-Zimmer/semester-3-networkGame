@@ -37,7 +37,8 @@ public class Gui extends Application{
 
 	private static Label[][] fields;
 	private TextArea scoreList;
-	
+
+	public static Gui gui;
 
 
 	
@@ -101,16 +102,17 @@ public class Gui extends Application{
 
 			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 				switch (event.getCode()) {
-				case UP:    Client.sendMoveToServer("up"); break;
-				case DOWN:  Client.sendMoveToServer("down"); break;
-				case LEFT:  Client.sendMoveToServer("left"); break;
-				case RIGHT: Client.sendMoveToServer("right"); break;
+				case UP:    playerMoved(0,-1,"up"); Client.sendMoveToServer("up"); break;
+				case DOWN:  playerMoved(0,+1,"down"); Client.sendMoveToServer("down"); break;
+				case LEFT:  playerMoved(-1,0,"left"); Client.sendMoveToServer("left"); break;
+				case RIGHT: playerMoved(+1,0,"right"); Client.sendMoveToServer("right"); break;
 				case ESCAPE:System.exit(0); 
 				default: break;
 				}
 			});
 			
 
+			gui = this;
 
 			scoreList.setText(getScoreList());
 		} catch(Exception e) {
