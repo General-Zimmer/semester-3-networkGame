@@ -72,14 +72,17 @@ public class Client{
 
 	public static boolean readBoardFromServer() {
 		try {
+			Thread.sleep(8);
 			List<Player> playersList = (List<Player>) objectInFromServer.readObject();
 			localLogic.players = playersList; // Opdaterer spillerlisten
 			return true;
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 			return false;
-		}
-	}
+		} catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	public static void sendMoveToServer(String move) {
 		System.out.println("SENDTE ET MOVE :D");
