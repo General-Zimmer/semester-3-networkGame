@@ -36,10 +36,10 @@ public class Server {
 	private static class JoinThread extends Thread {
 		ServerSocket welcomeSocket = new ServerSocket(1337);
 
-        private JoinThread() throws IOException {
-        }
+		private JoinThread() throws IOException {
+		}
 
-        public void run() {
+		public void run() {
 			while (true) {
 				Socket connectionSocket;
 				try {
@@ -76,36 +76,35 @@ public class Server {
 		public void run() {
 			double leftOver = 0;
 			double msPerTick = 30;
-			while (true) {
-				double beforeTime = System.nanoTime();
-				gameLogic.movePlayers(actions);
-				try {
-					sendBytesBack();
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-				try {
-
-
-					double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) / 1_000_000;
-					if (timeLeftonTick > 0) {
-						if (leftOver > 0 && leftOver < msPerTick) {
-							leftOver -= msPerTick;
-						} else if (leftOver > 0) {
-							synchronized (this) {
-								this.wait((long) leftOver);
-							}
-							leftOver = 0;
-						} else
-							synchronized (this) {
-								this.wait((long) timeLeftonTick);
-							}
-					} else {
-						System.out.println("Server is running behind: " + timeLeftonTick + " and " + leftOver);
-						leftOver += timeLeftonTick;
+			synchronized (this) {
+				while (true) {
+					double beforeTime = System.nanoTime();
+					gameLogic.movePlayers(actions);
+					try {
+						sendBytesBack();
+					} catch (IOException e) {
+						throw new RuntimeException(e);
 					}
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
+					try {
+
+
+						double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) * 0.000_0001;
+						if (timeLeftonTick > 0) {
+							if (leftOver > 0 && leftOver < msPerTick) {
+								leftOver -= msPerTick;
+							} else if (leftOver > 0) {
+								this.wait((long) leftOver);
+								leftOver = 0;
+							} else
+								this.wait((long) timeLeftonTick);
+
+						} else{
+							System.out.println("Server is running behind: " + timeLeftonTick + " and " + leftOver);
+							leftOver += timeLeftonTick;
+						}
+					} catch(InterruptedException e){
+						throw new RuntimeException(e);
+					}
 				}
 			}
 		}
@@ -126,8 +125,8 @@ public class Server {
 				}
 			}
 
-			}
 		}
+	}
 
 	private static int sizeOfSockets() {
 		int size = 0;
