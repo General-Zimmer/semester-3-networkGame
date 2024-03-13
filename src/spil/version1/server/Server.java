@@ -77,11 +77,7 @@ public class Server {
 			while (true) {
 				double beforeTime = System.nanoTime();
 				gameLogic.movePlayers(actions, actionToSend);
-				try {
-					sendBytesBack();
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
+				sendBytesBack();
 				try {
 
 

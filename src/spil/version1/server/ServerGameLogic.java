@@ -3,7 +3,6 @@ package spil.version1.server;
 import spil.version1.gamefiles.Generel;
 import spil.version1.gamefiles.Player;
 import spil.version1.gamefiles.pair;
-import spil.version1.interfaces.IEGameLogic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.Random;
 
 
 
-public class ServerGameLogic implements IEGameLogic {
+public class ServerGameLogic {
     public final List<Player> players = new ArrayList<>();
 
 
@@ -82,6 +81,8 @@ public class ServerGameLogic implements IEGameLogic {
 
 
     }
+
+
 
     public void movePlayers(Queue<String> actions, Queue<String> actionsToSend) {
         while (!actions.isEmpty()) {
