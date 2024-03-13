@@ -177,15 +177,7 @@ public class Gui extends Application{
 
 	public static void clearBoard() {
 		Platform.runLater(() -> {
-			for (int j = 0; j < fields.length; j++) {
-				for (int i = 0; i < fields[j].length; i++) {
-					// Tjekker, om det aktuelle felt er et gulv
-					if (Generel.board[j].charAt(i) == ' ') {
-						fields[i][j].setGraphic(new ImageView(image_floor));
-					}
-					// Du kan tilføje flere betingelser her, hvis der er andre typer felter, du gerne vil nulstille
-				}
-			}
+			Client.localLogic.players.forEach(p -> removePlayerOnScreen(p.getLocation()));
 		});
 	}
 	
