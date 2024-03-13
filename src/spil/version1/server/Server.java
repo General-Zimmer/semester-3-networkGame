@@ -5,7 +5,6 @@ import spil.version1.gamefiles.Player;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -32,35 +31,7 @@ public class Server {
 
 	}
 
-	private static class gameTickThread extends Thread {
-		public void run() {
-			double leftOver = 0;
-			double msPerTick = 8;
-			while (true) {
-				double beforeTime = System.nanoTime();
-				gameLogic.movePlayers(actions);
-				sendBytesBack();
-				try {
 
-					double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) / 1_000_000;
-					if (timeLeftonTick > 0) {
-						if (leftOver > 0 && leftOver < msPerTick) {
-							leftOver -= msPerTick;
-						} else if (leftOver > 0) {
-							Thread.sleep((long) leftOver);
-							leftOver = 0;
-						} else
-							Thread.sleep((long) timeLeftonTick);
-					} else {
-						System.out.println("Server is running behind: " + timeLeftonTick + " and " + leftOver);
-						leftOver += timeLeftonTick;
-					}
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
-	}
 
 	private static class JoinThread extends Thread {
 		ServerSocket welcomeSocket = new ServerSocket(1337);
@@ -100,7 +71,42 @@ public class Server {
 		}
 	}
 
-	private static void sendBytesBack() {
+
+	private static class gameTickThread extends Thread {
+		public void run() {
+			double leftOver = 0;
+			double msPerTick = 8;
+			while (true) {
+				double beforeTime = System.nanoTime();
+				gameLogic.movePlayers(actions);
+				try {
+					sendBytesBack();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+				try {
+
+					double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) / 1_000_000;
+					if (timeLeftonTick > 0) {
+						if (leftOver > 0 && leftOver < msPerTick) {
+							leftOver -= msPerTick;
+						} else if (leftOver > 0) {
+							this.wait((long) leftOver);
+							leftOver = 0;
+						} else
+							this.wait((long) timeLeftonTick);
+					} else {
+						System.out.println("Server is running behind: " + timeLeftonTick + " and " + leftOver);
+						leftOver += timeLeftonTick;
+					}
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+	}
+
+	private static void sendBytesBack() throws IOException {
 		for (int i = 0; i < sockets.length; i++) {
 			Socket s = sockets[i];
 			if (s != null && !s.isClosed()) {
@@ -112,6 +118,7 @@ public class Server {
 					out.flush();
 				} catch (IOException e) {
 					e.printStackTrace(); // Håndter afbrudte forbindelser her
+					s.close();
 				}
 			}
 
