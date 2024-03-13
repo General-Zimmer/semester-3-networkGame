@@ -70,7 +70,7 @@ public class Client{
 	public static boolean readBoardFromServer() {
 		try {
 			ConcurrentArrayList playersList = (ConcurrentArrayList) objectInFromServer.readObject();
-			if (playersList.equals(localLogic.players)) return false; // Hvis spiltilstanden er uændret, returnér false (ingen opdatering af GUI
+			if (playersList == localLogic.players) return false; // Hvis spiltilstanden er uændret, returnér false (ingen opdatering af GUI
 			localLogic.players = playersList; // Opdaterer spillerlisten
 			return true;
 		} catch (IOException | ClassNotFoundException e) {

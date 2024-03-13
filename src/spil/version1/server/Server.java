@@ -100,8 +100,6 @@ public class Server {
 							System.out.println("Server is running behind: " + timeLeftonTick + " and " + leftOver);
 							leftOver += timeLeftonTick;
 						}
-						System.out.println("Leftover: " + leftOver);
-						System.out.println("Timeleft: " + timeLeftonTick);
 					} catch(InterruptedException e){
 						throw new RuntimeException(e);
 					}
