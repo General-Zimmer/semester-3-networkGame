@@ -105,13 +105,18 @@ public class Server {
 			Socket s = sockets[i];
 			if (s != null && !s.isClosed()) {
 
-				try {
-					synchronized (lock) {
-						objectToClient[i].writeObject(gameLogic.getPlayers());
+				ObjectOutputStream out = objectToClient[i];
+				new Thread(() -> {
+					try {
+						out.reset();
+						synchronized (lock) {
+							out.writeObject(gameLogic.getPlayers());
+						}
+						out.flush();
+					} catch (IOException e) {
+						e.printStackTrace(); // Håndter afbrudte forbindelser her
 					}
-				} catch (IOException e) {
-					e.printStackTrace(); // Håndter afbrudte forbindelser her
-				}
+				}).start();
 			}
 
 			}

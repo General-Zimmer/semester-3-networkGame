@@ -13,7 +13,7 @@ import java.util.Random;
 
 
 public class ServerGameLogic implements IEGameLogic {
-    public List<Player> players= new ArrayList<>();
+    public List<Player> players = new ArrayList<>();
 
 
 
@@ -117,6 +117,6 @@ public class ServerGameLogic implements IEGameLogic {
 
 
     public List<Player> getPlayers() {
-        return new ArrayList<>(players);
+        return players;
     }
 }
