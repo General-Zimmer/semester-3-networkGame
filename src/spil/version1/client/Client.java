@@ -20,7 +20,7 @@ public class Client{
 	private static  DataOutputStream outToServer;
 	private static BufferedReader inFromServer;
 
-	static ObjectInputStream objectInFromServer;
+	static ObjectInputStream objectInFromServer;//TODO spillere synces kun ved death
 	static ObjectOutputStream objectOutToServer;
 
 	public static void main(String argv[]) throws Exception{

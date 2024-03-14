@@ -14,7 +14,7 @@ public class Server {
 
 	static Queue<String> actions = new PriorityQueue<>();
 	static ServerGameLogic gameLogic = new ServerGameLogic();
-	static Socket[] connections = new Socket[5];
+	static Socket[] connections = new Socket[5];//TODO: static metode sync
 	static ObjectOutputStream[]	objectToClient = new ObjectOutputStream[5];
 	/**
 	 * @param args
