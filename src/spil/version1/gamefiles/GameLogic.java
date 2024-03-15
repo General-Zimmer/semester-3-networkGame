@@ -1,27 +1,30 @@
 package spil.version1.gamefiles;
 
-import spil.version1.interfaces.IEGameLogic;
-
 import java.util.Queue;
 import java.util.Random;
 
 
 
-public class GameLogic implements IEGameLogic {
-	public ConcurrentArrayList players = new ConcurrentArrayList();
+public class GameLogic {
+	private final GameState state = new GameState();
+	private final boolean hasGui;
+
+	public GameLogic(boolean hasGui) {
+		this.hasGui = hasGui;
+	}
 
 	public Player makePlayer(String name) {
 		Player me;
 		pair p=getRandomFreePosition();
 		me = new Player(name,p,"up");
-		players.add(me);
+		state.getPlayers().add(me);
 		return me;
 	}
 	
 	public void makeVirtualPlayer()	{    // just demo/testing player - not in real game
 		pair p = getRandomFreePosition();
 		Player kaj = new Player("Kaj",p,"up");
-		players.add(kaj);
+		state.getPlayers().add(kaj);
 	}
 
 	
@@ -39,15 +42,14 @@ public class GameLogic implements IEGameLogic {
 			if (Generel.board[y].charAt(x)==' ') // er det gulv ?
 			{
 				foundfreepos = true;
-				for (Player p: players) {
+				for (Player p: state.getPlayers()) {
 					if (p.getXpos()==x && p.getYpos()==y) //pladsen optaget af en anden 
 						foundfreepos = false;
 				}
 				
 			}
 		}
-		pair p = new pair(x,y);
-		return p;
+        return new pair(x,y);
 	}
 	
 	public void updatePlayer(Player me, int delta_x, int delta_y, String direction) {
@@ -67,13 +69,13 @@ public class GameLogic implements IEGameLogic {
               pair pa = getRandomFreePosition();
               p.setLocation(pa);
               pair oldpos = new pair(x+delta_x,y+delta_y);
-              Gui.movePlayerOnScreen(oldpos, pa, p.direction, p);
+			  if (this.hasGui) Gui.movePlayerOnScreen(oldpos, pa, p.direction, p);
 			} else {
 				me.addPoints(1);
 			}
 			pair oldpos = me.getLocation();
 			pair newpos = new pair(x+delta_x,y+delta_y);
-			Gui.movePlayerOnScreen(oldpos, newpos, direction, me);
+			if (this.hasGui) Gui.movePlayerOnScreen(oldpos, newpos, direction, me);
 			me.setLocation(newpos);
 		}
 		
@@ -81,8 +83,9 @@ public class GameLogic implements IEGameLogic {
 	}
 
 	public void movePlayers(Queue<String> actions) {
-		for (String action : actions) {
-			String[] hændelse = action.split(" ");
+		if (!actions.isEmpty()) state.incrementTickID();
+		while (!actions.isEmpty()) {
+			String[] hændelse = actions.poll().split(" ");
 			Player p = getPlayer(hændelse[1]);
 			switch (hændelse[2].toLowerCase()) {
 			case "up": updatePlayer(p,0,-1,"up"); break;
@@ -94,7 +97,7 @@ public class GameLogic implements IEGameLogic {
 	}
 
 	public Player getPlayer(String name) {
-		for (Player p : players) {
+		for (Player p : state.getPlayers()) {
 			if (p.name.equals(name)) {
 				return p;
 			}
@@ -103,7 +106,7 @@ public class GameLogic implements IEGameLogic {
 	}
 
 	public Player getPlayerAt(int x, int y) {
-		for (Player p : players) {
+		for (Player p : state.getPlayers()) {
 			if (p.getXpos()==x && p.getYpos()==y) {
 				return p;
 			}
@@ -113,6 +116,20 @@ public class GameLogic implements IEGameLogic {
 
 
 	public ConcurrentArrayList getPlayers() {
-		return players;
+		return state.getPlayers();
 	}
+
+	public void setState(GameState gameState) {
+		state.setPlayers(gameState.getPlayers());
+		state.setTickID(gameState.getTickID());
+	}
+
+	public long getTickID() {
+		return state.getTickID();
+	}
+
+	public GameState getState() {
+		return state;
+	}
+
 }

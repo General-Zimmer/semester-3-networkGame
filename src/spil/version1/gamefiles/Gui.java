@@ -14,9 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import spil.version1.client.Client;
-import spil.version1.client.GuiThread;
 
 
 public class Gui extends Application{
@@ -121,9 +119,7 @@ public class Gui extends Application{
 	}
 	
 	public static void removePlayerOnScreen(pair oldpos) {
-		Platform.runLater(() -> {
-			fields[oldpos.getX()][oldpos.getY()].setGraphic(new ImageView(image_floor));
-			});
+		Platform.runLater(() -> fields[oldpos.getX()][oldpos.getY()].setGraphic(new ImageView(image_floor)));
 	}
 	
 	public static void placePlayerOnScreen(pair newpos, String direction, Player p) {
@@ -133,19 +129,19 @@ public class Gui extends Application{
 			if (direction.equals("right")) {
 				hero_right = new Image(Gui.class.getResourceAsStream(p.getHeroRightIconPath()),size,size,false,false);
 				fields[newx][newy].setGraphic(new ImageView(hero_right));
-			};
+			}
 			if (direction.equals("left")) {
 				hero_left = new Image(Gui.class.getResourceAsStream(p.getHeroLeftIconPath()),size,size,false,false);
 				fields[newx][newy].setGraphic(new ImageView(hero_left));
-			};
+			}
 			if (direction.equals("up")) {
 				hero_up = new Image(Gui.class.getResourceAsStream(p.getHeroUpIconPath()),size,size,false,false);
 				fields[newx][newy].setGraphic(new ImageView(hero_up));
-			};
+			}
 			if (direction.equals("down")) {
 				hero_down = new Image(Gui.class.getResourceAsStream(p.getHeroDownIconPath()),size,size,false,false);
 				fields[newx][newy].setGraphic(new ImageView(hero_down));
-			};
+			}
 			});
 	}
 	
@@ -159,9 +155,7 @@ public class Gui extends Application{
 	
 	public void updateScoreTable()
 	{
-		Platform.runLater(() -> {
-			scoreList.setText(getScoreList());
-			});
+		Platform.runLater(() -> scoreList.setText(getScoreList()));
 	}
 
 	public void playerMoved(int delta_x, int delta_y, String direction) {
@@ -170,9 +164,9 @@ public class Gui extends Application{
 	}
 	
 	public String getScoreList() {
-		StringBuffer b = new StringBuffer(100);
-		for (Player p : gameLogic.players) {
-			b.append(p + "\r\n");
+		StringBuilder b = new StringBuilder(100);
+		for (Player p : gameLogic.getPlayers()) {
+			b.append(p).append("\r\n");
 		}
 		return b.toString();
 	}

@@ -1,44 +1,44 @@
 package spil.version1.server;
-import java.net.*;
-import java.io.*;
-import java.util.Deque;
-import java.util.PriorityQueue;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Queue;
 
 public class ServerThread extends Thread{
-	Socket[] sockets;
-
 	Queue<String> actions;
-	BufferedReader[] inFromclients;
+	PlayerConn[] playerConns;
 
-	public ServerThread(Socket[] sockets, BufferedReader[] inFromclients,Queue<String> actions) {
-		this.sockets = sockets;
+	public ServerThread(PlayerConn[] playerConns, Queue<String> actions) {
 		this.actions = actions;
-		this.inFromclients = inFromclients;
+		this.playerConns = playerConns;
 	}
 	public void run() {
 		try {
 			while (true) {
-				for (int i = 0; i < sockets.length; i++) {
+                for (PlayerConn playerConn : playerConns) {
 
-					Socket socket = sockets[i];
-					if (socket == null) {
-						continue;
-					}
-					BufferedReader inFromClient = inFromclients[i];
-					String clientSentence = "";
-					if (inFromClient.ready()) {
-						clientSentence = inFromClient.readLine();
-						System.out.println("Received: " + clientSentence);
-					}
+                    if (playerConn == null) {
+                        continue;
+                    }
+                    BufferedReader inFromClient = playerConn.stringFromClient();
+                    String clientSentence = "";
+                    if (inFromClient.ready()) {
+                        clientSentence = inFromClient.readLine();
+                        System.out.println("Received: " + clientSentence);
+                    }
 
-					if (clientSentence.startsWith("arnold ")) {
-						actions.add(clientSentence);
-					}
-				}
+                    if (clientSentence.startsWith("arnold ")) {
+                        actions.add(clientSentence);
+                    }
+                }
+                synchronized (this) {
+                    wait(0, 500000); // Så vi ikke bruger 100% af en core
+                }
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
+		} catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
