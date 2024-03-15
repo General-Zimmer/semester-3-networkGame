@@ -47,15 +47,9 @@ public class Server {
 						ObjectOutputStream objectToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
 						DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-						String name;
-						try {
-							name = read.readLine().split(" ")[2];
-						} catch (IOException e) {
-							throw new RuntimeException(e);
-						}
-						PlayerConn playerConn = new PlayerConn(connectionSocket, outToClient, objectToClient, read, name);
+						String name = read.readLine().split(" ")[2];
 
-						System.out.println("queued player: " + name + " up");
+						PlayerConn playerConn = new PlayerConn(connectionSocket, outToClient, objectToClient, read, name);
 						joinQueue.add(playerConn);
 					}
 				} catch (IOException e) {
