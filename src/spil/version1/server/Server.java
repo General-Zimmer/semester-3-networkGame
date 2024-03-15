@@ -65,38 +65,40 @@ public class Server {
 		public void run() {
 			double leftOver = 0;
 			double msPerTick = 8;
-			synchronized (this) {
-				while (true) {
-					double beforeTime = System.nanoTime();
-					playerJoins();
-					gameLogic.movePlayers(actions);
-					sendBytesBack();
 
-					double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) / 1000000.0;
+			while (true) {
+				double beforeTime = System.nanoTime();
+				playerJoins();
+				gameLogic.movePlayers(actions);
+				sendBytesBack();
 
-					try {
-						if (timeLeftonTick > 0) {
-							if (leftOver > 0 && leftOver < msPerTick) {
-								leftOver -= msPerTick;
-							} else if (leftOver > 0) {
-								this.wait((long) leftOver, (int) (leftOver % 1));
-								leftOver = 0;
-							} else
-								this.wait((long) timeLeftonTick, (int) (timeLeftonTick % 1));
+				double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) / 1000000.0;
 
-						} else{
-							System.out.println("Server is running behind");
-							System.out.println("   timeLeftonTick: " + timeLeftonTick);
-							System.out.println("   leftOver: " + leftOver);
-							leftOver += timeLeftonTick;
-						}
-					} catch(InterruptedException e){
-						throw new RuntimeException(e);
-					}
-				}
+
+				if (timeLeftonTick < 0) { // Check for if server is running behind
+					System.out.println("Server is running behind");
+					System.out.println("   timeLeftonTick: " + timeLeftonTick);
+					System.out.println("   leftOver: " + leftOver);
+					leftOver += timeLeftonTick;
+				} else if (leftOver > 0 && leftOver < msPerTick) { // Check for if left is less than a tick and not 0
+					leftOver -= msPerTick;
+				} else if (leftOver > 0) { // Check for if left is more than 0 (aka, the server is running behind and needs to catch up)
+					waitForTick((long) leftOver, (int) (leftOver % 1));
+					leftOver = 0;
+				} else // business as usual
+					waitForTick((long) timeLeftonTick, (int) (timeLeftonTick % 1));
+			}
+		}
+		private synchronized void waitForTick(long milisecond, int nanosecond) {
+			try {
+				this.wait(milisecond, nanosecond);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
+
+
 
 	private static void sendBytesBack() {
         for (PlayerConn conn : playerConns) {
