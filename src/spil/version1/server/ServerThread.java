@@ -15,27 +15,29 @@ public class ServerThread extends Thread{
 	public void run() {
 		try {
 			while (true) {
-                for (PlayerConn playerConn : playerConns) {
+                synchronized (Server.connLock) {
+                    for (PlayerConn playerConn : playerConns) {
 
-                    if (playerConn == null) {
-                        continue;
-                    }
-                    BufferedReader inFromClient = playerConn.stringFromClient();
-                    String clientSentence = "";
-                    if (inFromClient.ready()) {
-                        clientSentence = inFromClient.readLine();
-                        System.out.println("Received: " + clientSentence);
-                    }
+                        if (playerConn == null) {
+                            continue;
+                        }
+                        BufferedReader inFromClient = playerConn.stringFromClient();
+                        String clientSentence = "";
+                        if (inFromClient.ready()) {
+                            clientSentence = inFromClient.readLine();
+                            System.out.println("Received: " + clientSentence);
+                        }
 
-                    if (clientSentence.startsWith("arnold ")) {
-                        actions.add(clientSentence);
+                        if (clientSentence.startsWith("arnold ")) {
+                            actions.add(clientSentence);
+                        }
                     }
                 }
                 synchronized (this) {
                     wait(0, 500000); // Så vi ikke bruger 100% af en core
                 }
-			}
-		} catch (IOException e) {
+            }
+        } catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
             throw new RuntimeException(e);

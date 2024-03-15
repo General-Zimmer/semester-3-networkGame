@@ -17,6 +17,7 @@ public class Server {
 	static GameLogic gameLogic = new GameLogic(false);
 	static final PlayerConn[] playerConns = new PlayerConn[5];
 	static final Queue<PlayerConn> joinQueue = new PriorityQueue<>();
+	public static final Object connLock = new Object();
 
 
 	public static void main(String[] args) {
@@ -31,7 +32,7 @@ public class Server {
 			try {
 				this.welcomeSocket = new ServerSocket(1337);
 			} catch (IOException e) {
-				throw new RuntimeException(e);
+				e.printStackTrace();
 			}
 		}
 
@@ -43,7 +44,7 @@ public class Server {
 					if (sizeOfConns() + joinQueue.size() >= playerConns.length) {
 						connectionSocket.close();
 					} else {
-
+						connectionSocket.setSoTimeout(120000);
 						ObjectOutputStream objectToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
 						DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 						BufferedReader read = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
@@ -53,7 +54,7 @@ public class Server {
 						joinQueue.add(playerConn);
 					}
 				} catch (IOException e) {
-					throw new RuntimeException(e);
+					e.printStackTrace();
 				}
 
 			}
@@ -84,17 +85,18 @@ public class Server {
 				} else if (leftOver > 0 && leftOver < msPerTick) { // Check for if left is bigger than a tick and not 0
 					leftOver -= msPerTick; 							// (aka, the server is running behind and needs to catch up)
 				} else if (leftOver > 0) { // get the last bit of leftOver
-					waitForTick((long) leftOver, (int) (leftOver % 1));
+					waitForTick((long) leftOver, (int) ((leftOver % 1) * 1000000));
 					leftOver = 0;
-				} else // business as usual
-					waitForTick((long) timeLeftonTick, (int) (timeLeftonTick % 1));
+				} else {// business as usual
+					waitForTick((long) timeLeftonTick, (int) ((timeLeftonTick % 1) * 1000000));
+				}
 			}
 		}
 		private synchronized void waitForTick(long milisecond, int nanosecond) {
 			try {
 				this.wait(milisecond, nanosecond);
 			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+				e.printStackTrace();
 			}
 		}
 	}
@@ -102,24 +104,28 @@ public class Server {
 
 
 	private static void sendBytesBack() {
-        for (PlayerConn conn : playerConns) {
-            if (conn != null && !conn.socket().isClosed()) {
+		synchronized (connLock) {
+			for (PlayerConn conn : playerConns) {
+				if (conn != null && !conn.socket().isClosed()) {
 
-                ObjectOutputStream out = conn.objectToClient();
-                try {
-					out.reset();
-                    out.writeObject(gameLogic.getState());
-                } catch (IOException e) {
-                    e.printStackTrace(); // Håndter afbrudte forbindelser her
+					ObjectOutputStream out = conn.objectToClient();
 					try {
-						conn.socket().close();
-					} catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-            }
+						out.writeUnshared(gameLogic.getState());
+						out.flush();
+						System.out.println("Sent state to " + conn.name());
+					} catch (IOException e) {
+						e.printStackTrace(); // Håndter afbrudte forbindelser her
+						try {
+							conn.socket().close();
 
-        }
+						} catch (IOException ex) {
+							ex.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	private static void playerJoins() {
@@ -129,21 +135,25 @@ public class Server {
 				Player p = gameLogic.makePlayer(conn.name());
 				conn.outToClient().writeBytes("tilmeldt " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + "\n");
 				int i = sizeOfConns();
-				playerConns[i] = conn;
+				synchronized (connLock) {
+					playerConns[i] = conn;
+				}
 				System.out.println("Tilmeldt " + conn.name() + " som spiller " + i);
 
 			} catch (IOException e) {
-				throw new RuntimeException(e);
+				e.printStackTrace();
 			}
 		}
-
+		System.out.println("player joins done");
 	}
 
 	private static int sizeOfConns() {
 		int size = 0;
-		for (PlayerConn connection : playerConns) {
-			if (connection != null) {
-				size++;
+		synchronized (connLock) {
+			for (PlayerConn connection : playerConns) {
+				if (connection != null) {
+					size++;
+				}
 			}
 		}
 		return size;
