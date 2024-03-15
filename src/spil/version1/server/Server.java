@@ -72,7 +72,8 @@ public class Server {
 				gameLogic.movePlayers(actions);
 				sendBytesBack();
 
-				double timeLeftonTick = msPerTick - (System.nanoTime() - beforeTime) / 1000000.0;
+				double afterTime = System.nanoTime();
+				double timeLeftonTick = msPerTick - (afterTime - beforeTime) / 1000000.0;
 
 
 				if (timeLeftonTick < 0) { // Check for if server is running behind
