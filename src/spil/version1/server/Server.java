@@ -65,14 +65,14 @@ public class Server {
 		public void run() {
 			double leftOver = 0;
 			double msPerTick = 50;
-			long LastTickID = -1;
+			long LastTickID = 0;
 			while (true) {
 				double beforeTime = System.nanoTime();
 				playerJoins();
 				gameLogic.movePlayers(actions);
 				if (!(gameLogic.getState().getTickID() == LastTickID)) {
 					LastTickID = gameLogic.getState().getTickID();
-					sendBytesBack();
+					sendStateToAll();
 				}
 
 				double afterTime = System.nanoTime();
@@ -105,33 +105,39 @@ public class Server {
 
 
 
-	private static void sendBytesBack() {
+	private static void sendStateToAll() {
 		for (PlayerConn conn : playerConns) {
-			if (conn != null && !conn.socket().isClosed()) {
-
-				ObjectOutputStream out = conn.objectToClient();
-				try {
-					out.reset();
-					out.writeObject(gameLogic.getState());
-					out.flush();
-					System.out.println("Sent state to " + conn.name());
-				} catch (IOException e) {
-					e.printStackTrace(); // Håndter afbrudte forbindelser her
-					try {
-						conn.socket().close();
-						for (int i = 0; i < playerConns.length; i++) {
-							if (playerConns[i].equals(conn)) {
-								playerConns[i] = null;
-							}
-						}
-					} catch (IOException ex) {
-						ex.printStackTrace();
-					}
-				}
-
-			}
+			sendState(conn);
 		}
 	}
+
+	private static void sendState(PlayerConn conn) {
+		if (conn != null && !conn.socket().isClosed()) {
+
+			ObjectOutputStream out = conn.objectToClient();
+			try {
+				out.reset();
+				out.writeObject(gameLogic.getState());
+				out.flush();
+			} catch (IOException e) {
+				e.printStackTrace(); // Håndter afbrudte forbindelser her
+				try {
+					conn.socket().close();
+					for (int i = 0; i < playerConns.length; i++) {
+						if (playerConns[i] != null && playerConns[i].equals(conn)) {
+							playerConns[i] = null;
+							gameLogic.
+						}
+					}
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+
+		}
+	}
+
+
 
 	private static void playerJoins() {
 		while (!joinQueue.isEmpty()) {
@@ -139,6 +145,7 @@ public class Server {
 			try {
 				Player p = gameLogic.makePlayer(conn.name());
 				conn.outToClient().writeBytes("tilmeldt " + p.getName() + " " + p.getLocation().getX() + " " + p.getLocation().getY() + "\n");
+				conn.outToClient().flush();
 				int i = sizeOfConns();
 				playerConns[i] = conn;
 
@@ -148,7 +155,6 @@ public class Server {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("player joins done");
 	}
 
 	private static int sizeOfConns() {

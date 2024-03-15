@@ -94,7 +94,6 @@ public class GameLogic {
 			case "right": updatePlayer(p,1,0,"right"); break;
 			}
 		}
-		System.out.println("TickID: " + state.getTickID());
 	}
 
 	public Player getPlayer(String name) {
