@@ -81,9 +81,9 @@ public class Server {
 					System.out.println("   timeLeftonTick: " + timeLeftonTick);
 					System.out.println("   leftOver: " + leftOver);
 					leftOver += timeLeftonTick;
-				} else if (leftOver > 0 && leftOver < msPerTick) { // Check for if left is less than a tick and not 0
-					leftOver -= msPerTick;
-				} else if (leftOver > 0) { // Check for if left is more than 0 (aka, the server is running behind and needs to catch up)
+				} else if (leftOver > 0 && leftOver < msPerTick) { // Check for if left is bigger than a tick and not 0
+					leftOver -= msPerTick; 							// (aka, the server is running behind and needs to catch up)
+				} else if (leftOver > 0) { // get the last bit of leftOver
 					waitForTick((long) leftOver, (int) (leftOver % 1));
 					leftOver = 0;
 				} else // business as usual
