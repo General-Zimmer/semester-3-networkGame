@@ -40,7 +40,7 @@ public class Server {
 				Socket connectionSocket;
 				try {
 					connectionSocket = welcomeSocket.accept();
-					if (sizeOfConns() + joinQueue.size() >= 5) {
+					if (sizeOfConns() + joinQueue.size() >= playerConns.length) {
 						connectionSocket.close();
 					} else {
 
