@@ -72,12 +72,12 @@ public class Client{
 	}
 
 	public static void sendMoveToServer(String move) {
-		System.out.println("SENDTE ET MOVE :D");
 		try {
 			outToServer.writeBytes("arnold " + navnGlobal+ " " + move+ "\n");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		System.out.println("SENDTE ET MOVE :D");
 	}
 
 	public static void updateLocalBoard() {
