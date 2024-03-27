@@ -126,7 +126,6 @@ public class Server {
 					for (int i = 0; i < playerConns.length; i++) {
 						if (playerConns[i] != null && playerConns[i].equals(conn)) {
 							playerConns[i] = null;
-							gameLogic.
 						}
 					}
 				} catch (IOException ex) {
